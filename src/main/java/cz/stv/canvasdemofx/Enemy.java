@@ -36,7 +36,7 @@ public class Enemy {
     }
 
     /**
-     * mění polohu nepřítele po
+     * mění polohu nepřítele
      * */
     public void moved(double slayerx, double slayery){
         if(slayerx <= enemyx && slayery <= enemyy){
