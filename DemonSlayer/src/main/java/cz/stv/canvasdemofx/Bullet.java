@@ -1,18 +1,27 @@
 package cz.stv.canvasdemofx;
 
+import javafx.scene.Scene;
+
 public class Bullet {
+
 
     double xmove; // pohyb
     double ymove;
     double positionx;  // pozice
     double positiony;
     double speed;  //rychlost
+    boolean bounce;
 
     /**
      * Vypočítá všechny výchozí hodnoty střely
      * */
-    Bullet(double xplayer, double yplayer, double xmouse, double ymouse) {
-        speed = 5; //rychlost střely
+    Bullet(double xplayer, double yplayer, double xmouse, double ymouse, boolean fast, boolean bounce) {
+        this.bounce = bounce;
+        if (fast) {
+            speed = 6; //rychlost střely když je aktivován perk se zrychlením střely
+        } else {
+            speed = 4; //rychlost střely normálně
+        }
 
         positionx = xplayer; //počátek střely v bodě x (poloha hráče při střelbě na ose x)
         positiony = yplayer; //počátek střely v bodě y (poloha hráče při střelbě na ose y)
