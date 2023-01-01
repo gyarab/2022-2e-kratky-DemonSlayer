@@ -111,6 +111,8 @@ public class MainForm implements Initializable{
 
   int count = 0;
 
+  int hp = 5;
+
   ArrayList<Bullet> projecriles = new ArrayList<Bullet>();  //pole střel ve hře
   ArrayList<Enemy> enemys = new ArrayList<Enemy>();  //pole nepřátel ve hře
 
@@ -197,14 +199,26 @@ public class MainForm implements Initializable{
       }
     }
 
-    int d = projecriles.toArray().length;
-    for(int c = 0; c < enemys.toArray().length;c++){
+    b = projecriles.toArray().length;
+    int d = enemys.toArray().length;
+    for(int c = 0; c < d;c++){
       enemys.get(c).moved(slayercenterx, slayercentery);
       drawEnemy(enemys.get(c).enemyx, enemys.get(c).enemyy);
       if(15 > enemys.get(c).enemycenterx - slayercenterx && enemys.get(c).enemycenterx - slayercenterx > -15 && 15 > enemys.get(c).enemycentery - slayercentery && enemys.get(c).enemycentery - slayercentery > -15) {
         enemys.remove(c);
         d--;
         c--;
+        hp--;
+      }
+      for(int f = 0; f < b; f++){
+        if(8 > enemys.get(c).enemycenterx - projecriles.get(f).positionx && enemys.get(c).enemycenterx - projecriles.get(f).positionx > -8 && 8 > enemys.get(c).enemycentery - projecriles.get(f).positiony && enemys.get(c).enemycentery - projecriles.get(f).positiony > -8) {
+          enemys.remove(c);
+          projecriles.remove(f);
+          d--;
+          c--;
+          b--;
+          f--;
+        }
       }
     }
 
@@ -219,6 +233,11 @@ public class MainForm implements Initializable{
       caountdown--;
     }
     enemysummoncaountdown--;
+
+    if(hp < 1){
+      pauseTheGame();
+      System.out.println("Game over");
+    }
   }
 
   /**
