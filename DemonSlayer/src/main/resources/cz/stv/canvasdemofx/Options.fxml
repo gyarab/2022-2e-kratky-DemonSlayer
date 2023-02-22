@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.stv.canvasdemofx.App">
+   <children>
+      <VBox layoutX="304.0" layoutY="213.0" prefHeight="244.0" prefWidth="82.0">
+         <children>
+            <Button fx:id="granatepressed" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" onAction="#changeGranate"/>
+            <Button fx:id="escape" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" onAction="#changeEscape"/>
+            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" />
+            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" />
+            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" />
+            <ChoiceBox fx:id="leveldifficulty" prefHeight="30.0" prefWidth="82.0" />
+            <CheckBox fx:id="hardcoremode" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" text="If you want to have hardcore mark it." />
+         </children>
+      </VBox>
+      <VBox layoutX="304.0" layoutY="52.0" prefHeight="123.0" prefWidth="82.0">
+         <children>
+            <Button fx:id="uppressed" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" onAction="#changeUp"/>
+            <Button fx:id="downpressed" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" onAction="#changeDown"/>
+            <Button fx:id="leftpressed" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" onAction="#changeLeft"/>
+            <Button fx:id="rightpressed" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" onAction="#changeRight"/>
+         </children>
+      </VBox>
+      <Button layoutX="349.0" layoutY="18.0" mnemonicParsing="false" onKeyPressed="#keyPressed" onAction="#exitOptions" text="ESC" />
+      <Label layoutX="14.0" layoutY="18.0" prefHeight="26.0" prefWidth="111.0" text="Movement" />
+      <Label layoutX="14.0" layoutY="179.0" prefHeight="26.0" prefWidth="122.0" text="Other" />
+      <VBox layoutX="14.0" layoutY="213.0" prefHeight="237.0" prefWidth="290.0">
+         <children>
+            <Label prefHeight="30.0" prefWidth="82.0" text="Granate" />
+            <Label prefHeight="30.0" prefWidth="82.0" text="Settings" />
+            <Label prefHeight="30.0" prefWidth="82.0" text="Label" />
+            <Label prefHeight="30.0" prefWidth="82.0" text="Label" />
+            <Label prefHeight="30.0" prefWidth="82.0" text="Label" />
+            <Label prefHeight="30.0" prefWidth="82.0" text="Difficulty" />
+            <Label prefHeight="30.0" prefWidth="82.0" text="Hardcore" />
+         </children>
+      </VBox>
+      <VBox layoutX="14.0" layoutY="52.0" prefHeight="123.0" prefWidth="290.0">
+         <children>
+            <Label prefHeight="30.0" prefWidth="50.0" text="Up" />
+            <Label prefHeight="30.0" prefWidth="50.0" text="Down" />
+            <Label prefHeight="30.0" prefWidth="50.0" text="Left" />
+            <Label prefHeight="30.0" prefWidth="50.0" text="Right" />
+         </children>
+      </VBox>
+      <Button layoutX="304.0" layoutY="18.0" mnemonicParsing="false" onAction="#renameAllButtons" prefHeight="26.0" prefWidth="50.0" text="Res." />
+      <Label layoutX="11.0" layoutY="567.0" prefHeight="18.0" prefWidth="378.0" text="For seeing the current settings press Res. button." />
+   </children>
+</AnchorPane>

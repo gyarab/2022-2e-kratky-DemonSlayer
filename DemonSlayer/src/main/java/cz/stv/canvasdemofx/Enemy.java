@@ -8,14 +8,18 @@ public class Enemy {
     double enemycentery;
     double enemycenterx;
     boolean range;
-    double speed;
+    boolean faster;
+    double speed = 0.9;
 
 
-    Enemy(boolean range, int count, double speed,long time) {
+    Enemy(int count, long time,boolean range, boolean faster) {
         Date date = new Date();
         time = date.getTime() - time;
-        this.speed = speed;
         this.range = range;
+        this.faster = faster;
+        if(faster){
+            speed += speed * 0.25;
+        }
 
         if(count == 1){
             enemyx = time%126*10;
@@ -38,20 +42,20 @@ public class Enemy {
     /**
      * mění polohu nepřítele
      * */
-    public void moved(double slayerx, double slayery){
-        if(slayerx <= enemyx && slayery <= enemyy){
-            enemyx -= speed;
-            enemyy -= speed;
-        }else if (slayerx >= enemyx && slayery <= enemyy) {
-            enemyx += speed;
-            enemyy -= speed;
-        }else if (slayerx <= enemyx) {
-            enemyx -= speed;
-            enemyy += speed;
-        }else{
-            enemyx += speed;
-            enemyy += speed;
+    public void moved(double slayerx, double slayery, boolean player){
+
+        double x = slayerx - enemyx;
+        double y = slayery - enemyy;
+        double c = speed/Math.sqrt(x*x + y*y);
+        x*=c;
+        y*=c;
+
+        if(!player){
+            x*=-1;
+            y*=-1;
         }
+        enemyx += x;
+        enemyy += y;
 
         enemycenterx = enemyx + 5;
         enemycentery = enemyy + 5;
