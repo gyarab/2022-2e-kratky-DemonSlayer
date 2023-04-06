@@ -3,13 +3,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="780.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.stv.canvasdemofx.App">
-   <Button fx:id="exitbutton"  onAction="#exit" layoutX="1420.0" layoutY="14.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" text="ESC" onKeyPressed="#keyPressed" />
-   <Button fx:id="levelonebutton" onAction="#startLevelOne" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="1. level" />
-   <Button fx:id="leveltwobutton" onAction="#startLevelTwo" layoutX="14.0" layoutY="64.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="2. level" />
-   <Button fx:id="levelthreebutton" onAction="#startLevelThree" layoutX="14.0" layoutY="114.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="3. level" />
-   <Button fx:id="levelfourbutton" onAction="#startLevelFour" layoutX="14.0" layoutY="164.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="4. level" />
-   <Button fx:id="levelfivebutton" onAction="#startLevelFive" layoutX="14.0" layoutY="214.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="5. level" />
-   <Button fx:id="levelsixbutton" onAction="#startLevelSix" layoutX="14.0" layoutY="264.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="6. level" />
-   <Button fx:id="levelsevenbutton" onAction="#startLevelSeven" layoutX="14.0" layoutY="314.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="7. level" />
+<AnchorPane prefHeight="780.0" prefWidth="1480.0" onKeyPressed="#keyMMPressed" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.stv.canvasdemofx.App">
+   <Button fx:id="exitbutton" layoutX="1400.0" layoutY="14.0" mnemonicParsing="false" onAction="#exit" prefHeight="50.0" prefWidth="52.0" text="ESC" />
+   <Button fx:id="levelonebutton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#startLevelOne" prefHeight="50.0" prefWidth="100.0" text="1. level" />
+   <Button fx:id="leveltwobutton" layoutX="14.0" layoutY="64.0" mnemonicParsing="false" onAction="#startLevelTwo" prefHeight="50.0" prefWidth="100.0" text="2. level" />
+   <Button fx:id="levelthreebutton" layoutX="14.0" layoutY="114.0" mnemonicParsing="false" onAction="#startLevelThree" prefHeight="50.0" prefWidth="100.0" text="3. level" />
+   <Button fx:id="levelfourbutton" layoutX="14.0" layoutY="164.0" mnemonicParsing="false" onAction="#startLevelFour" prefHeight="50.0" prefWidth="100.0" text="4. level" />
+   <Button fx:id="levelfivebutton" layoutX="14.0" layoutY="214.0" mnemonicParsing="false" onAction="#startLevelFive" prefHeight="50.0" prefWidth="100.0" text="5. level" />
+   <Button fx:id="levelsixbutton" layoutX="14.0" layoutY="264.0" mnemonicParsing="false" onAction="#startLevelSix" prefHeight="50.0" prefWidth="100.0" text="6. level" />
+   <Button fx:id="levelsevenbutton" layoutX="14.0" layoutY="314.0" mnemonicParsing="false" onAction="#startLevelSeven" prefHeight="50.0" prefWidth="100.0" text="7. level" />
+   <Button fx:id="settingsbut" layoutX="14.0" layoutY="585.0" mnemonicParsing="false" onAction="#openSettings" prefHeight="80.0" prefWidth="200.0" text="Options" />
+   <Button fx:id="upgradesbut" layoutX="14.0" layoutY="666.0" mnemonicParsing="false" onAction="#openUpgrades" prefHeight="100.0" prefWidth="400.0" text="Upgrades" />
+   <Button fx:id="resetcharacer" layoutX="1365.0" layoutY="675.0" mnemonicParsing="false" onAction="#resetCharacer" prefHeight="90.0" prefWidth="100.0" text="Reset Character" />
 </AnchorPane>

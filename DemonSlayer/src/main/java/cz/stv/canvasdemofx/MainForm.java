@@ -33,14 +33,22 @@ public class MainForm extends Application implements Initializable {
     {
       if(paused == false) {
         try {
+          if(numberofinteruction == 3){
+            numberofinteruction = 0;
+          }
           draw();
+          numberofinteruction++;
         } catch (IOException e) {
           e.printStackTrace();
 
+        } catch (InterruptedException e) {
+          e.printStackTrace();
         }
       }
     }
   };
+
+  int numberofinteruction = 0;
 
   private Timeline timer;
 
@@ -60,7 +68,7 @@ public class MainForm extends Application implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle rb) {
 
-    StatsAndSettings s = getAll();
+    StatsAndSettings s = App.getAll();
 
     level = s.currentlevel;
     difficulty = s.difficulty;
@@ -71,9 +79,9 @@ public class MainForm extends Application implements Initializable {
     }
 
     if(difficulty == 1){
-      spawnrate += 500;
-    }else if(difficulty == 1){
-      spawnrate -= 200;
+      spawnrate += 2000;
+    }else if(difficulty == 3){
+      spawnrate -= 800;
     }
 
     if(s.level > 3){
@@ -84,7 +92,7 @@ public class MainForm extends Application implements Initializable {
       hp = 1;
     }
 
-    Duration duration = Duration.millis(5);
+    Duration duration = Duration.millis(3);
     KeyFrame keyFrame = new KeyFrame (duration, timingHandler);
     
     timer = new Timeline(keyFrame);
@@ -151,17 +159,17 @@ public class MainForm extends Application implements Initializable {
   int level = 1;
   int hp = 5;
   int difficulty = 2;
-  int spawnrate = 1000;
+  int spawnrate = 5000;
   boolean win = false;
 
   ArrayList<Bullet> projecriles = new ArrayList<Bullet>();  //pole střel ve hře
-  ArrayList<Enemy> enemys = new ArrayList<Enemy>();  //pole nepřátel ve hře
+  static ArrayList<Enemy> enemys = new ArrayList<Enemy>();  //pole nepřátel ve hře
 
   /**
    * Volá funkce co kreslí a rozhoduje o souřadnicích hráče
    * */
   @FXML
-  private void draw() throws IOException {
+  private void draw() throws IOException, InterruptedException {
 
     GraphicsContext gc = canvas.getGraphicsContext2D();
 
@@ -169,10 +177,20 @@ public class MainForm extends Application implements Initializable {
       summonEnemy();
       enemysummoncaountdown = spawnrate;
     }
+
+    for(int a = 0; a < enemys.size();a++){
+      for(int c = a + 1; c < enemys.size();c++){
+        if(10 > enemys.get(a).enemycenterx - enemys.get(c).enemycenterx && enemys.get(a).enemycenterx - enemys.get(c).enemycenterx > -10 && 10 > enemys.get(a).enemycentery - enemys.get(c).enemycentery && enemys.get(a).enemycentery - enemys.get(c).enemycentery > -10) {
+          MainForm.enemys.get(a).moved(enemys.get(c).enemyx, enemys.get(c).enemyy, false);
+          MainForm.enemys.get(c).moved(enemys.get(a).enemyx, enemys.get(a).enemyy, false);
+        }
+      }
+    }
+
     if(fastwalkingmode){
-      step = 1.25;
+      step = 0.4;
     }else{
-      step = 1;
+      step = 0.27;
     }
 
     if (wpressed == true && slayery > 25){
@@ -196,6 +214,8 @@ public class MainForm extends Application implements Initializable {
     }
 
     drawDelate();
+    drawGun(slayercenterx, slayercentery, xmouse, ymouse);
+    drawSlayer(slayerx, slayery);
 
     /*
      * kreslí a odráží střely
@@ -269,25 +289,9 @@ public class MainForm extends Application implements Initializable {
             b--;
             f--;
           }
-        }catch(IndexOutOfBoundsException e){}
+        }catch(IndexOutOfBoundsException g){}
       }
     }
-
-    /*
-    * Posunuje jednotky aby nebyly v sobě
-    * */
-    for(int a = 0; a < enemys.size();a++){
-      for(int c = a + 1; c < enemys.size();c++){
-        if(10 > enemys.get(a).enemycenterx - enemys.get(c).enemycenterx && enemys.get(a).enemycenterx - enemys.get(c).enemycenterx > -10 && 10 > enemys.get(a).enemycentery - enemys.get(c).enemycentery && enemys.get(a).enemycentery - enemys.get(c).enemycentery > -10) {
-
-          enemys.get(a).moved(enemys.get(c).enemyx, enemys.get(c).enemyy, false);
-          enemys.get(c).moved(enemys.get(a).enemyx, enemys.get(a).enemyy, false);
-        }
-      }
-    }
-
-    drawGun(slayercenterx, slayercentery, xmouse, ymouse);
-    drawSlayer(slayerx, slayery);
 
     if(shootnow){
       shoot(autoshootingmode);
@@ -617,7 +621,7 @@ public class MainForm extends Application implements Initializable {
 
     KeyCode key = event.getCode();
 
-    StatsAndSettings s = getAll();
+    StatsAndSettings s = App.getAll();
 
     if (key == s.up) {
       wpressed = true;
@@ -629,22 +633,8 @@ public class MainForm extends Application implements Initializable {
       dpressed = true;
     } else if (key == s.escape) {
       pauseTheGame();
-    } else if (key == KeyCode.P) {
-      shotgunMode();
-    } else if (key == KeyCode.O) {
-      mashinegunMode();
-    } else if (key == KeyCode.I) {
-      fastBulletsMode();
-    } else if (key == KeyCode.U) {
-      fastWalkingMode();
-    } else if (key == KeyCode.Z) {
-      bounceMode();
-    } else if (key == KeyCode.T) {
-      granateMode();
-    } else if (key == KeyCode.X) {
-      ultraMashinegunMode();
-    } else if (key == KeyCode.C) {
-      autoShootingMode();
+    } else if(key == s.granate) {
+      shootGranate();
     }
   }
 
@@ -656,7 +646,7 @@ public class MainForm extends Application implements Initializable {
 
     KeyCode key = event.getCode();
 
-    StatsAndSettings s = getAll();
+    StatsAndSettings s = App.getAll();
 
     if (key == s.up) {
       wpressed = false;
@@ -794,12 +784,12 @@ public class MainForm extends Application implements Initializable {
   public void gameOver(boolean win) throws IOException {
     timer.stop();
     if (win){
-      StatsAndSettings s = getAll();
+      StatsAndSettings s = App.getAll();
       if(level == s.level){
         s.level++;
       }
       s.scrabCounter(level,hp);
-      saveAll(s);
+      App.saveAll(s);
     }
 
     EventObject event = null;
@@ -825,33 +815,12 @@ public class MainForm extends Application implements Initializable {
     return fxmlLoader.load();
   }
 
-  /**
-   * uloží StatsAndSettings do souboru
-   */
-  public void saveAll(StatsAndSettings s){
-    try{
-      FileOutputStream f = new FileOutputStream("soubor.dat");
-      ObjectOutputStream out = new ObjectOutputStream(f);
-      out.writeObject(s);
-    } catch (IOException e) {
-
-    }
-  }
-
-  /**
-   * dostane data o StatsAndSettings ze souboru
-   */
-  public StatsAndSettings getAll(){
-    try{
-      FileInputStream f = new FileInputStream("soubor.dat");
-      ObjectInputStream in = new ObjectInputStream(f);
-      StatsAndSettings s = (StatsAndSettings) in.readObject();
-      return s;
-    } catch (IOException e) {
-      return new StatsAndSettings();
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-      return new StatsAndSettings();
+  public void shootGranate(){
+    for(int i = 0; i < enemys.size(); i++){
+      if(10 > enemys.get(i).enemycenterx - xmouse && enemys.get(i).enemycenterx - xmouse > -10 && 10 > enemys.get(i).enemycentery - ymouse && enemys.get(i).enemycentery - ymouse > -10) {
+        enemys.remove(i);
+        i--;
+      }
     }
   }
 }

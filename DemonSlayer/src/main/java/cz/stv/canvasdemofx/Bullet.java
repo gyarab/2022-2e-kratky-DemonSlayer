@@ -18,9 +18,9 @@ public class Bullet {
     Bullet(double xplayer, double yplayer, double xmouse, double ymouse, boolean fast, boolean bounce) {
         this.bounce = bounce;
         if (fast) {
-            speed = 6; //rychlost střely když je aktivován perk se zrychlením střely
+            speed = 1; //rychlost střely když je aktivován perk se zrychlením střely
         } else {
-            speed = 4; //rychlost střely normálně
+            speed = 0.85; //rychlost střely normálně
         }
 
         positionx = xplayer; //počátek střely v bodě x (poloha hráče při střelbě na ose x)

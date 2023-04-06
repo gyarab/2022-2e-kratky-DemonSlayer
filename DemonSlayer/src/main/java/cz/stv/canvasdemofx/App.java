@@ -9,8 +9,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -59,6 +62,15 @@ public class App extends Application implements Serializable {
     @FXML
     private Button rightpressed;
 
+    @FXML
+    private Button upgrades;
+
+    @FXML
+    private CheckBox hardcoremode;
+
+    @FXML
+    private ChoiceBox leveldifficulty;
+
     /*
     * Zmáčknuté klávesy
     * */
@@ -68,6 +80,7 @@ public class App extends Application implements Serializable {
     boolean changeright = false;
     boolean changegranate = false;
     boolean changeescape = false;
+    boolean changeupgrade = false;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -209,15 +222,34 @@ public class App extends Application implements Serializable {
      * */
     @FXML
     public void exitOptions(ActionEvent event){
-        Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+        exitWindow((Stage)((Node) event.getSource()).getScene().getWindow());
+    }
+    public void exitWindow(Stage stage){
         stage.close();
     }
 
     /**
-     * detekuje a přenastavuje klávesy
+     * detekuje a přenastavuje klávesy v hlavním menu
      */
     @FXML
-    public void keyPressed(KeyEvent event) throws IOException {
+    public void keyMMPressed(KeyEvent event) throws IOException {
+
+        KeyCode key = event.getCode();
+
+        StatsAndSettings s = getAll();
+
+        if (key == s.escape) {
+            settings();
+        }else if(key == s.upgrade){
+            upgrade();
+        }
+    }
+
+    /**
+     * detekuje a přenastavuje klávesy c options
+     */
+    @FXML
+    public void keyOpPressed(KeyEvent event) throws IOException {
 
         KeyCode key = event.getCode();
 
@@ -247,8 +279,26 @@ public class App extends Application implements Serializable {
             changegranate = false;
             s.granate = key;
             saveAll(s);
+        }else if(changeupgrade){
+            changeupgrade = false;
+            s.upgrade = key;
+            saveAll(s);
         }else if (key == s.escape) {
-            settings();
+            exitWindow((Stage)((Node) event.getSource()).getScene().getWindow());
+        }
+    }
+
+
+    /**
+     * detekuje klávesy stlačené při upgrades
+     * */
+    @FXML
+    public void onUpPressed(KeyEvent event) {
+        KeyCode key = event.getCode();
+        StatsAndSettings s = getAll();
+
+        if(s.upgrade == key){
+            exitWindow((Stage)((Node) event.getSource()).getScene().getWindow());
         }
     }
 
@@ -256,7 +306,7 @@ public class App extends Application implements Serializable {
      * detekuje klávesu na změnu pohynu nahoru
      * */
     @FXML
-    public void changeUp() throws IOException {
+    public void changeUp() {
         changeup = true;
     }
 
@@ -264,7 +314,7 @@ public class App extends Application implements Serializable {
      * detekuje klávesu na změnu pohynu dolu
      * */
     @FXML
-    public void changeDown() throws IOException {
+    public void changeDown() {
         changedown = true;
     }
 
@@ -272,7 +322,7 @@ public class App extends Application implements Serializable {
      * detekuje klávesu na změnu pohynu doleva
      * */
     @FXML
-    public void changeLeft() throws IOException {
+    public void changeLeft() {
         changeleft = true;
     }
 
@@ -280,7 +330,7 @@ public class App extends Application implements Serializable {
      * detekuje klávesu na změnu pohynu doprava
      * */
     @FXML
-    public void changeRight() throws IOException {
+    public void changeRight() {
         changeright = true;
     }
 
@@ -288,7 +338,7 @@ public class App extends Application implements Serializable {
      * detekuje klávesu na escape
      * */
     @FXML
-    public void changeEscape() throws IOException {
+    public void changeEscape() {
         changeescape = true;
     }
 
@@ -296,9 +346,14 @@ public class App extends Application implements Serializable {
      * detekuje klávesu na granátu
      * */
     @FXML
-    public void changeGranate() throws IOException {
+    public void changeGranate() {
         changegranate = true;
     }
+
+    /**
+     * detekuje klávesu na upgradu
+     * */
+    public void changeUpgrade(ActionEvent actionEvent) {changeupgrade = true;}
 
     /**
      * zapne nové okno s nastaveními
@@ -306,6 +361,13 @@ public class App extends Application implements Serializable {
     public void settings() throws IOException {
         Stage options = new Stage();
         scene = new Scene(loadFXML("Options"));
+        options.setScene(scene);
+        options.show();
+    }
+
+    private void upgrade() throws IOException {
+        Stage options = new Stage();
+        scene = new Scene(loadFXML("Upgrades"));
         options.setScene(scene);
         options.show();
     }
@@ -318,7 +380,9 @@ public class App extends Application implements Serializable {
         leftpressed.setText(s.left.getChar());
         rightpressed.setText(s.right.getChar());
         granatepressed.setText(s.granate.getChar());
+        upgrades.setText(s.upgrade.getChar());
         escape.setText(s.escape.getChar());
+        hardcoremode.setSelected(s.hardcore);
         saveAll(s);
     }
 
@@ -326,11 +390,13 @@ public class App extends Application implements Serializable {
     /**
      * uloží StatsAndSettings do souboru
      */
-    public void saveAll(StatsAndSettings s){
+    public static void saveAll(StatsAndSettings s){
         try{
             FileOutputStream f = new FileOutputStream("soubor.dat");
             ObjectOutputStream out = new ObjectOutputStream(f);
             out.writeObject(s);
+            out.close();
+            f.close();
         } catch (IOException e) {
 
         }
@@ -339,11 +405,13 @@ public class App extends Application implements Serializable {
     /**
      * dostane data o StatsAndSettings ze souboru
      */
-    public StatsAndSettings getAll(){
+    public static StatsAndSettings getAll(){
         try{
             FileInputStream f = new FileInputStream("soubor.dat");
             ObjectInputStream in = new ObjectInputStream(f);
             StatsAndSettings s = (StatsAndSettings) in.readObject();
+            in.close();
+            f.close();
             return s;
         } catch (IOException e) {
             return new StatsAndSettings();
@@ -358,5 +426,59 @@ public class App extends Application implements Serializable {
      * */
     public void changeCollor(Button b){
         b.setTextFill(Color.RED);
+    }
+
+
+    /**
+     * obnový obrazovku
+     * */
+    @FXML
+    public void reset() {
+
+    }
+
+    /**
+     * detekuje klávesy stlačené při upgrades
+     * */
+    @FXML
+    public void resetCharacer() {
+        StatsAndSettings s = getAll();
+        s.resetCharacter();
+        saveAll(s);
+    }
+
+    /**
+     * otevře settings
+     * */
+    public void openSettings(ActionEvent actionEvent) throws IOException {
+        settings();
+    }
+
+    /**
+     * upgrades settings
+     * */
+    public void openUpgrades(ActionEvent actionEvent) throws IOException {
+        upgrade();
+    }
+
+    /**
+     * nastavuje hardcore mod
+     * */
+    @FXML
+    public void setHardcore() {
+        StatsAndSettings s = getAll();
+        s.hardcore = hardcoremode.isSelected();
+        System.out.println(hardcoremode.isCache());
+        saveAll(s);
+    }
+
+    /**
+     * resetuje nastavení
+     * */
+    @FXML
+    public void resBinds() {
+        StatsAndSettings s = getAll();
+        s.resetBinds();
+        saveAll(s);
     }
 }

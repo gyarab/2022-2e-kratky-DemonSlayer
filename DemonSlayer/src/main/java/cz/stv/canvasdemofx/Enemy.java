@@ -9,7 +9,7 @@ public class Enemy {
     double enemycenterx;
     boolean range;
     boolean faster;
-    double speed = 0.9;
+    double speed = 0.25;
 
 
     Enemy(int count, long time,boolean range, boolean faster) {
