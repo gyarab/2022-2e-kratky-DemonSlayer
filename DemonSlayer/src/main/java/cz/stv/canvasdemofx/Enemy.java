@@ -9,12 +9,16 @@ public class Enemy {
     double enemycenterx;
     boolean range;
     boolean faster;
-    double speed = 0.25;
+    boolean tank;
+    int hp = 3;
+    double speed = 0.60;
 
 
-    Enemy(int count, long time,boolean range, boolean faster) {
+    Enemy(int count, long time, boolean range, boolean faster, boolean tank) {
         Date date = new Date();
         time = date.getTime() - time;
+        this.tank = tank;
+        if(tank){hp*=2;}
         this.range = range;
         this.faster = faster;
         if(faster){
@@ -46,7 +50,17 @@ public class Enemy {
 
         double x = slayerx - enemyx;
         double y = slayery - enemyy;
-        double c = speed/Math.sqrt(x*x + y*y);
+        double rangeatac = 1;
+
+        if(player && range){
+            if(x <= 10 && x >= -10 && y <= 10 && y >= -10){
+                rangeatac = 3;
+            }else if(x <= 20 && x >= -20 && y <= 20 && y >= -20){
+                rangeatac = 2;
+            }
+        }
+
+        double c = rangeatac*speed/Math.sqrt(x*x + y*y);
         x*=c;
         y*=c;
 

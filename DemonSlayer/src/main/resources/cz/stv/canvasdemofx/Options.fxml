@@ -3,6 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import java.lang.Integer?>
 <AnchorPane id="AnchorPane" onKeyPressed="#keyOpPressed" onMouseMoved="#renameAllButtons" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.stv.canvasdemofx.App">
    <children>
       <VBox layoutX="304.0" layoutY="213.0" prefHeight="244.0" prefWidth="82.0">
@@ -10,7 +13,15 @@
             <Button fx:id="granatepressed" mnemonicParsing="false" onAction="#changeGranate" prefHeight="30.0" prefWidth="82.0" />
             <Button fx:id="escape" mnemonicParsing="false" onAction="#changeEscape" prefHeight="30.0" prefWidth="82.0" />
             <Button fx:id="upgrades" mnemonicParsing="false" onAction="#changeUpgrade" prefHeight="30.0" prefWidth="82.0" />
-            <ChoiceBox fx:id="leveldifficulty" prefHeight="30.0" prefWidth="82.0" />
+            <ChoiceBox fx:id="leveldifficulty" prefHeight="30.0" prefWidth="82.0">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="Easy" />
+                     <String fx:value="Normal" />
+                     <String fx:value="Hard" />
+                  </FXCollections>
+               </items>
+            </ChoiceBox>
             <CheckBox fx:id="hardcoremode" onAction="#setHardcore" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" text="If you want to have hardcore mark it." />
          </children>
       </VBox>

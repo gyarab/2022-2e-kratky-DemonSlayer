@@ -9,11 +9,13 @@ import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -26,15 +28,19 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import static java.lang.Thread.sleep;
+
 public class MainForm extends Application implements Initializable {
   private EventHandler<ActionEvent> timingHandler = new EventHandler<ActionEvent>() {
+
     @Override
     public void handle(ActionEvent event)
     {
-      if(paused == false) {
+      if(!paused) {
         try {
           if(numberofinteruction == 3){
             numberofinteruction = 0;
+            collisions();
           }
           draw();
           numberofinteruction++;
@@ -70,6 +76,14 @@ public class MainForm extends Application implements Initializable {
 
     StatsAndSettings s = App.getAll();
 
+    for(int a = 0; a < enemys.size();) {
+      enemys.remove(a);
+    }
+    for(int a = 0; a < projecriles.size();) {
+      projecriles.remove(a);
+    }
+    hp = 5;
+
     level = s.currentlevel;
     difficulty = s.difficulty;
 
@@ -79,9 +93,9 @@ public class MainForm extends Application implements Initializable {
     }
 
     if(difficulty == 1){
-      spawnrate += 2000;
+      spawnrate += 500;
     }else if(difficulty == 3){
-      spawnrate -= 800;
+      spawnrate -= 200;
     }
 
     if(s.level > 3){
@@ -91,6 +105,16 @@ public class MainForm extends Application implements Initializable {
     if(s.hardcore){
       hp = 1;
     }
+
+    bouncemode = s.BB;
+    piercingmode = s.PB;
+    granatemode = s.G;
+    fastmode = s.FB;
+    mashinegunmode = s.MG;
+    ultramashinegunmode = s.FMG;
+    shotgunmode = s.SG;
+    autoshootingmode = s.AS;
+    fastwalkingmode = s.FW;
 
     Duration duration = Duration.millis(3);
     KeyFrame keyFrame = new KeyFrame (duration, timingHandler);
@@ -105,10 +129,10 @@ public class MainForm extends Application implements Initializable {
   /*
    * poloha středu a levého dolního okraje postavy hráče
    * */
-  double slayerx = 500.0;
-  double slayery = 500.0;
-  double slayercenterx = slayerx + 7.5;
-  double slayercentery = slayery + 7.5;
+  static double slayerx = 500.0;
+  static double slayery = 500.0;
+  static double slayercenterx = slayerx + 7.5;
+  static double slayercentery = slayery + 7.5;
 
   /*
    * zapnuté mody
@@ -157,73 +181,20 @@ public class MainForm extends Application implements Initializable {
   * základní parametry levelu
   * */
   int level = 1;
-  int hp = 5;
+  static int hp = 5;
   int difficulty = 2;
-  int spawnrate = 5000;
-  boolean win = false;
+  int spawnrate = 1500;
+  int granattimer = 0;
 
-  ArrayList<Bullet> projecriles = new ArrayList<Bullet>();  //pole střel ve hře
+  static ArrayList<Bullet> projecriles = new ArrayList<Bullet>();  //pole střel ve hře
   static ArrayList<Enemy> enemys = new ArrayList<Enemy>();  //pole nepřátel ve hře
 
   /**
-   * Volá funkce co kreslí a rozhoduje o souřadnicích hráče
+   * vyřeší včechny kolize
    * */
-  @FXML
-  private void draw() throws IOException, InterruptedException {
-
-    GraphicsContext gc = canvas.getGraphicsContext2D();
-
-    if(enemysummoncaountdown == 0){
-      summonEnemy();
-      enemysummoncaountdown = spawnrate;
-    }
-
-    for(int a = 0; a < enemys.size();a++){
-      for(int c = a + 1; c < enemys.size();c++){
-        if(10 > enemys.get(a).enemycenterx - enemys.get(c).enemycenterx && enemys.get(a).enemycenterx - enemys.get(c).enemycenterx > -10 && 10 > enemys.get(a).enemycentery - enemys.get(c).enemycentery && enemys.get(a).enemycentery - enemys.get(c).enemycentery > -10) {
-          MainForm.enemys.get(a).moved(enemys.get(c).enemyx, enemys.get(c).enemyy, false);
-          MainForm.enemys.get(c).moved(enemys.get(a).enemyx, enemys.get(a).enemyy, false);
-        }
-      }
-    }
-
-    if(fastwalkingmode){
-      step = 0.4;
-    }else{
-      step = 0.27;
-    }
-
-    if (wpressed == true && slayery > 25){
-      slayery = slayery - step;
-      slayercentery = slayercentery - step;
-    }
-
-    if (apressed == true && slayerx > 25){
-      slayerx = slayerx - step;
-      slayercenterx = slayercenterx - step;
-    }
-
-    if (spressed == true && slayery < 560){
-      slayery = slayery + step;
-      slayercentery = slayercentery + step;
-    }
-
-    if (dpressed == true && slayerx < 1160){
-      slayerx = slayerx + step;
-      slayercenterx = slayercenterx + step;
-    }
-
-    drawDelate();
-    drawGun(slayercenterx, slayercentery, xmouse, ymouse);
-    drawSlayer(slayerx, slayery);
-
-    /*
-     * kreslí a odráží střely
-     * */
+  static void collisions(){
     int b = projecriles.toArray().length;
     for (int a = 0; a < b; a++) {
-      projecriles.get(a).moved();
-      drawBullet(projecriles.get(a).positionx, projecriles.get(a).positiony);
       if(projecriles.get(a).positiony > 600){
         if(projecriles.get(a).bounce){
           projecriles.get(a).bounce = false;
@@ -263,35 +234,110 @@ public class MainForm extends Application implements Initializable {
       }
     }
 
-    /*
-     * Kreslí jednotky
-     * */
     b = projecriles.toArray().length;
     int d = enemys.toArray().length;
     for(int c = 0; c < d;c++){
-      enemys.get(c).moved(slayercenterx, slayercentery, true);
-      drawEnemy(enemys.get(c).enemyx, enemys.get(c).enemyy, enemys.get(c).range,enemys.get(c).faster);
-       //Ubírá životy hráče
+      //Ubírá životy hráče
       if(15 > enemys.get(c).enemycenterx - slayercenterx && enemys.get(c).enemycenterx - slayercenterx > -15 && 15 > enemys.get(c).enemycentery - slayercentery && enemys.get(c).enemycentery - slayercentery > -15) {
         enemys.remove(c);
         d--;
         c--;
         hp--;
       }
-       //Zabíjí jednotky
+      //Zabíjí jednotky a ubírá jim životy
       for(int f = 0; f < b; f++){
         try{
           if(8 > enemys.get(c).enemycenterx - projecriles.get(f).positionx && enemys.get(c).enemycenterx - projecriles.get(f).positionx > -8 && 8 > enemys.get(c).enemycentery - projecriles.get(f).positiony && enemys.get(c).enemycentery - projecriles.get(f).positiony > -8) {
-            enemys.remove(c);
-            projecriles.remove(f);
-            d--;
-            c--;
-            b--;
-            f--;
+            enemys.get(c).hp--;
+            if(enemys.get(c).hp < 1){
+              enemys.remove(c);
+              d--;
+              c--;
+            }
+            if(projecriles.get(f).piercing){
+              projecriles.get(f).piercing = false;
+            }else{
+              projecriles.remove(f);
+              b--;
+              f--;
+            }
           }
         }catch(IndexOutOfBoundsException g){}
       }
     }
+  }
+
+  /**
+   * Volá funkce co kreslí a posouvá objekty (hráč, jednotky, střely)
+   * */
+  @FXML
+  private void draw() throws IOException, InterruptedException {
+
+    GraphicsContext gc = canvas.getGraphicsContext2D();
+
+    if(enemysummoncaountdown == 0){
+      summonEnemy();
+      if(granattimer != 0){
+        granattimer--;
+      }
+      enemysummoncaountdown = spawnrate;
+    }
+
+    if(fastwalkingmode){
+      step = 1.1;
+    }else{
+      step = 0.7;
+    }
+
+    for(int a = 0; a < enemys.size();a++){
+      for(int c = a + 1; c < enemys.size();c++){
+        if(10 > enemys.get(a).enemycenterx - enemys.get(c).enemycenterx && enemys.get(a).enemycenterx - enemys.get(c).enemycenterx > -10 && 10 > enemys.get(a).enemycentery - enemys.get(c).enemycentery && enemys.get(a).enemycentery - enemys.get(c).enemycentery > -10) {
+          MainForm.enemys.get(a).moved(enemys.get(c).enemyx, enemys.get(c).enemyy, false);
+          MainForm.enemys.get(c).moved(enemys.get(a).enemyx, enemys.get(a).enemyy, false);
+        }
+      }
+    }
+
+    if (wpressed == true && slayery > 25){
+      slayery = slayery - step;
+      slayercentery = slayercentery - step;
+    }
+
+    if (apressed == true && slayerx > 25){
+      slayerx = slayerx - step;
+      slayercenterx = slayercenterx - step;
+    }
+
+    if (spressed == true && slayery < 560){
+      slayery = slayery + step;
+      slayercentery = slayercentery + step;
+    }
+
+    if (dpressed == true && slayerx < 1160){
+      slayerx = slayerx + step;
+      slayercenterx = slayercenterx + step;
+    }
+
+    drawDelate();
+
+    /*
+     * kreslí střely
+     * */
+    for (int a = 0; a < projecriles.toArray().length; a++) {
+      projecriles.get(a).moved();
+      drawBullet(projecriles.get(a).positionx, projecriles.get(a).positiony);
+    }
+
+    /*
+     * Kreslí jednotky
+     * */
+    for(int c = 0; c < enemys.toArray().length;c++){
+      enemys.get(c).moved(slayercenterx, slayercentery, true);
+      drawEnemy(enemys.get(c).enemyx, enemys.get(c).enemyy, enemys.get(c).range,enemys.get(c).faster, enemys.get(c).tank);
+    }
+
+    drawGun(slayercenterx, slayercentery, xmouse, ymouse);
+    drawSlayer(slayerx, slayery);
 
     if(shootnow){
       shoot(autoshootingmode);
@@ -303,7 +349,7 @@ public class MainForm extends Application implements Initializable {
     enemysummoncaountdown--;
 
     if(hp < 1){
-      gameOver(win);
+      gameOver(false);
     }
   }
 
@@ -369,11 +415,19 @@ public class MainForm extends Application implements Initializable {
   /**
    * Nakreslí nepřítele
    * */
-  public void drawEnemy(double enemypx, double enemypy, boolean range, boolean faster){
+  public void drawEnemy(double enemypx, double enemypy, boolean range, boolean faster, boolean tank){
 
     GraphicsContext gc = canvas.getGraphicsContext2D();
 
-    if(faster){
+    if(faster && tank){
+      gc.setFill(Color.ORANGERED);
+    }else if(range && tank){
+      gc.setFill(Color.BLUE);
+    }else if(range && faster){
+      gc.setFill(Color.LIGHTCYAN);
+    }else if(tank){
+      gc.setFill(Color.BROWN);
+    }else if(faster){
       gc.setFill(Color.YELLOW);
     }else if(range){
       gc.setFill(Color.LIGHTBLUE);
@@ -470,7 +524,7 @@ public class MainForm extends Application implements Initializable {
     }
 
     if (caountdown == 0) {
-      projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse, fastmode, bouncemode));
+      projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse, fastmode, bouncemode,piercingmode));
 
       caountdown += 100;
 
@@ -484,18 +538,18 @@ public class MainForm extends Application implements Initializable {
 
       if (shotgunmode) {
         if (xmouse > slayercenterx) {
-          projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse + 10, ymouse, fastmode, bouncemode));
+          projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse + 10, ymouse, fastmode, bouncemode,piercingmode));
           if (ymouse > slayercentery) {
-            projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse + 10, fastmode, bouncemode));
+            projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse + 10, fastmode, bouncemode,piercingmode));
           } else {
-            projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse - 10, fastmode, bouncemode));
+            projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse - 10, fastmode, bouncemode,piercingmode));
           }
         } else {
-          projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse - 10, ymouse, fastmode, bouncemode));
+          projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse - 10, ymouse, fastmode, bouncemode,piercingmode));
           if (ymouse > slayercentery) {
-            projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse + 10, fastmode, bouncemode));
+            projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse + 10, fastmode, bouncemode,piercingmode));
           } else {
-            projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse - 10, fastmode, bouncemode));
+            projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse - 10, fastmode, bouncemode,piercingmode));
           }
         }
       }
@@ -505,64 +559,114 @@ public class MainForm extends Application implements Initializable {
   /**
    * Přidá nového nepřítele do hry podle toho jaká je vlna, jaký je level a jahá je obtížnost
    * */
-  public void summonEnemy() {
+  public void summonEnemy() throws IOException {
     if(level == 1){
-      if(count < 5){
-        summonPack(count, false, false);
-      }else if(count < 10){
-        summonPack(count, false, false);
-        summonPack(count*3, false, false);
-      }else if(count == 10){
-        summonPack(count, false, false);
-        summonPack(count*3, false, false);
-        summonPack(count*2, false, false);
-        summonPack(count*5, false, false);
+      if(count < 5 && count%2 ==1){
+        summonPack(count, false, false, false);
+      }else if(count < 7){
+        summonPack(count, false, false, false);
+      }else if(count == 8){
+        summonPack(count, false, false, false);
+        summonPack(count*3, false, false, false);
+        summonPack(count*2, false, false, false);
       }
 
       if(count > 10 && enemys.size() == 0){
-        hp = 0;
-        win = true;
+        gameOver(true);
       }
       count++;
     }else if(level == 2){
+      if(count < 5){
+        summonPack(count, false, false, false);
+      }else if(count < 10){
+        summonPack(count, false, false, false);
+        summonPack(count*3, false, false, false);
+      }else if(count == 10){
+        summonPack(count, false, false, false);
+        summonPack(count*3, false, false, false);
+        summonPack(count*2, false, true, false);
+        summonPack(count*5, false, false, false);
+      }
+
+      if(count > 10 && enemys.size() == 0){
+        gameOver(true);
+      }
+      count++;
+    }else if(level == 3){
       if(count < 3){
-        summonPack(count, false, false);
+        summonPack(count, false, false, false);
       }else if(count < 8){
-        summonPack(count, false, false);
+        summonPack(count, false, false, false);
         if(count%2 == 1){
-          summonPack(count*2, false, true);
+          summonPack(count*2, false, true, false);
         }
       }else if(count < 13){
-        summonPack(count, false, false);
-        summonPack(count*3, false, false);
-        summonPack(count*2, false, true);
+        summonPack(count, false, false, false);
+        summonPack(count*3, false, false, false);
+        summonPack(count*2, false, true, false);
       }else if(count < 15){
-        summonPack(count, false, false);
-        summonPack(count*3, false, false);
-        summonPack(count*5, false, false);
-        summonPack(count*2, false, true);
+        summonPack(count, false, false, false);
+        summonPack(count*3, false, false, false);
+        summonPack(count*5, false, false, false);
+        summonPack(count*2, false, true, false);
       }else if(count == 15){
-        summonPack(count, false, false);
-        summonPack(count*3, false, false);
-        summonPack(count*5, false, false);
-        summonPack(count*7, false, false);
-        summonPack(count*2, false, true);
-        summonPack(count*11, false, true);
+        summonPack(count, false, false, false);
+        summonPack(count*3, false, false, false);
+        summonPack(count*5, false, false, false);
+        summonPack(count*7, false, false, true);
+        summonPack(count*2, false, true, false);
+        summonPack(count*11, false, true, false);
       }
 
       if(count > 10 && enemys.size() == 0){
-        hp = 0;
-        win = true;
+        gameOver(true);
       }
       count++;
-    }else if(level == 2){
-      summonPack(count, false, false);
+    }else if(level == 4){
+      if(count < 3){
+        summonPack(count, false, false, false);
+        summonPack(count*5, false, false, false);
+      }else if(count < 8){
+        summonPack(count, false, false, false);
+        summonPack(count*5, false, false, false);
+        summonPack(count*2, false, true, false);
+      }else if(count < 13){
+        summonPack(count, false, false, false);
+        summonPack(count*3, false, false, false);
+        summonPack(count*2, false, true, false);
+        summonPack(count*5, false, false, true);
+      }else if(count < 15){
+        summonPack(count, false, true, false);
+        summonPack(count*2, false, true, false);
+        summonPack(count*3, false, false, true);
+        summonPack(count*5, false, false, true);
+      }else if(count == 15){
+        summonPack(count, false, false, false);
+        summonPack(count*3, false, false, false);
+        summonPack(count*3, true, false, false);
+        summonPack(count*5, false, false, true);
+        summonPack(count*7, false, false, true);
+        summonPack(count*2, false, true, false);
+        summonPack(count*11, false, true, false);
+      }
+
+      if(count > 10 && enemys.size() == 0){
+        gameOver(true);
+      }
       count++;
-    }else if(level == 2){
-      summonPack(count, false, false);
+    }else if(level == 5){
+      summonPack(count, false, false, false);
+
+      if(count > 10 && enemys.size() == 0){
+        gameOver(true);
+      }
       count++;
-    }else if(level == 2){
-      summonPack(count, false, false);
+    }else if(level == 6){
+      summonPack(count, false, false , false);
+
+      if(count > 10 && enemys.size() == 0){
+        gameOver(true);
+      }
       count++;
     }
   }
@@ -570,11 +674,11 @@ public class MainForm extends Application implements Initializable {
   /**
    * přidá do hry 4 jednotky
    * */
-  public void summonPack(int generator, boolean range, boolean faster) {
-    enemys.add(new Enemy(1, time*generator, range, faster));
-    enemys.add(new Enemy(2, time*generator, range, faster));
-    enemys.add(new Enemy(3, time*generator, range, faster));
-    enemys.add(new Enemy(4, time*generator, range, faster));
+  public void summonPack(int generator, boolean range, boolean faster, boolean tank) {
+    enemys.add(new Enemy(1, time*generator, range, faster, tank));
+    enemys.add(new Enemy(2, time*generator, range, faster, tank));
+    enemys.add(new Enemy(3, time*generator, range, faster, tank));
+    enemys.add(new Enemy(4, time*generator, range, faster, tank));
   }
 
   /**
@@ -634,7 +738,9 @@ public class MainForm extends Application implements Initializable {
     } else if (key == s.escape) {
       pauseTheGame();
     } else if(key == s.granate) {
-      shootGranate();
+      if(granatemode && granattimer == 0){
+        shootGranate();
+      }
     }
   }
 
@@ -663,118 +769,11 @@ public class MainForm extends Application implements Initializable {
    * Nastaví jestlimá hra běžet či nikoliv
    * */
   public void pauseTheGame() throws IOException {
-    if (paused == false){
+    if (!paused){
       paused = true;
-      settings();
-    } else if (paused == true){
+      App.settings();
+    } else {
       paused = false;
-    }
-  }
-
-  public void settings() throws IOException {
-    Stage options = new Stage();
-    scene = new Scene(loadFXML("Options"));
-    options.setScene(scene);
-    options.show();
-  }
-
-  /**
-   * Aktivuje mod brokovnice
-   * */
-  public void shotgunMode(){
-    if (shotgunmode == false){
-      shotgunmode = true;
-    } else if (shotgunmode == true){
-      shotgunmode = false;
-    }
-  }
-
-  /**
-   * Aktivuje mod rychlostřelby
-   * */
-  public void mashinegunMode(){
-    if (mashinegunmode == false){
-      mashinegunmode = true;
-    } else if (mashinegunmode == true){
-      mashinegunmode = false;
-    }
-  }
-
-  /**
-   * Aktivuje mod ještě rychlejší střelby
-   * */
-  public void ultraMashinegunMode(){
-    if (ultramashinegunmode == false){
-      ultramashinegunmode = true;
-    } else if (ultramashinegunmode == true){
-      ultramashinegunmode = false;
-    }
-  }
-
-  /**
-   * Ahtivuje mod rychle kulky
-   * */
-  public void fastBulletsMode(){
-    if (fastmode == false){
-      fastmode = true;
-    } else if (fastmode == true){
-      fastmode = false;
-    }
-  }
-
-  /**
-   * Ahtivuje mod rychle chozeni
-   * */
-  public void fastWalkingMode(){
-    if (fastwalkingmode == false){
-      fastwalkingmode = true;
-    } else if (fastwalkingmode == true){
-      fastwalkingmode = false;
-    }
-  }
-
-  /**
-   * Ahtivuje mod odražení kulek
-   * */
-  public void bounceMode(){
-    if (bouncemode == false){
-      bouncemode = true;
-    } else if (bouncemode == true){
-      bouncemode = false;
-    }
-  }
-
-  /**
-   * Ahtivuje mod granát - nedoděláno
-   * */
-  public void granateMode(){
-    if (granatemode == false){
-      granatemode = true;
-    } else if (granatemode == true){
-      granatemode = false;
-    }
-  }
-
-  /**
-   * Ahtivuje mod průstřel nepřátel - nedoděláno
-   * */
-  public void piercingMode(){
-    if (piercingmode == false){
-      piercingmode = true;
-    } else if (piercingmode == true){
-      piercingmode = false;
-    }
-  }
-
-
-  /**
-   * Ahtivuje mod autostřelby
-   * */
-  public void autoShootingMode() {
-    if (autoshootingmode == false) {
-      autoshootingmode = true;
-    } else if (autoshootingmode == true) {
-      autoshootingmode = false;
     }
   }
 
@@ -785,6 +784,7 @@ public class MainForm extends Application implements Initializable {
     timer.stop();
     if (win){
       StatsAndSettings s = App.getAll();
+      if(s.hardcore){hp += 5;}
       if(level == s.level){
         s.level++;
       }
@@ -792,7 +792,6 @@ public class MainForm extends Application implements Initializable {
       App.saveAll(s);
     }
 
-    EventObject event = null;
     Stage stage = (Stage) escape.getScene().getWindow();
     start(stage);
   }
@@ -815,12 +814,77 @@ public class MainForm extends Application implements Initializable {
     return fxmlLoader.load();
   }
 
-  public void shootGranate(){
+  /**
+   * vystřelý granát
+   * */
+  public void shootGranate() throws IOException {
+    granattimer = 3;
     for(int i = 0; i < enemys.size(); i++){
       if(10 > enemys.get(i).enemycenterx - xmouse && enemys.get(i).enemycenterx - xmouse > -10 && 10 > enemys.get(i).enemycentery - ymouse && enemys.get(i).enemycentery - ymouse > -10) {
         enemys.remove(i);
         i--;
       }
     }
+  }
+
+  /**
+   * vatvoří nové okno s upozorněním
+   * */
+  public void openWarning() throws IOException {
+    Stage options = new Stage();
+    scene = new Scene(loadFXML("WarningWindow"));
+    options.setScene(scene);
+    options.show();
+  }
+
+  int warningoption = 0;
+
+  /**
+   * resetuje level
+   * */
+  public void resetTheLevel() throws IOException {
+    warningoption = 1;
+    openWarning();
+  }
+
+  /**
+   * přejde do mainmenu
+   * */
+  public void backToMenu() throws IOException {
+    warningoption = 2;
+    openWarning();
+  }
+
+  /**
+   * vypne aplikaci
+   pauseTheGame(false);
+   * */
+  public void exitTheApp() throws IOException {
+    warningoption = 3;
+    openWarning();
+  }
+
+  /**
+   * potvrdí daný příklaz, kvůli kterému se otevřelo příkazové okno
+   * */
+  public void Accept() throws IOException {
+    if(warningoption == 1){
+      Stage stage = (Stage) escape.getScene().getWindow();
+      start(stage);
+    } else if(warningoption == 2){
+      Stage stage = (Stage) escape.getScene().getWindow();
+      start(stage);
+    } else if(warningoption == 3){
+      Platform.exit();
+    }
+    warningoption = 0;
+  }
+
+  /**
+   * zruší daný příklaz, kvůli kterému se otevřelo příkazové okno
+   * */
+  public void BackToGame(ActionEvent event) {
+    App.exitWindow((Stage)((Node) event.getSource()).getScene().getWindow());
+    warningoption = 0;
   }
 }

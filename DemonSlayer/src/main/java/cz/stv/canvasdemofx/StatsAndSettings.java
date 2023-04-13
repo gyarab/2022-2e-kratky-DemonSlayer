@@ -9,7 +9,7 @@ import java.security.Key;
 public class StatsAndSettings implements Serializable {
     int currentlevel = 1;
     int level = 1;
-    int scrab = 0;
+    int scrap = 0;
     KeyCode up = KeyCode.W;
     KeyCode down = KeyCode.S;
     KeyCode left = KeyCode.A;
@@ -40,25 +40,25 @@ public class StatsAndSettings implements Serializable {
 
     public void scrabCounter(int lvl, int hp){
         if(lvl == 1 && scone < hp){
-            scrab += hp - scone;
+            scrap += hp - scone;
             scone = hp;
         } else if(lvl == 2 && sctwo < hp){
-            scrab += hp - sctwo;
+            scrap += hp - sctwo;
             sctwo = hp;
         } else if(lvl == 3 && scthree < hp){
-            scrab += hp - scthree;
+            scrap += hp - scthree;
             scthree = hp;
         } else if(lvl == 4 && scfour < hp){
-            scrab += hp - scfour;
+            scrap += hp - scfour;
             scfour = hp;
         } else if(lvl == 5 && scfive < hp){
-            scrab += hp - scfive;
+            scrap += hp - scfive;
             scfive = hp;
         } else if(lvl == 6 && scsix < hp){
-            scrab += hp - scsix;
+            scrap += hp - scsix;
             scsix = hp;
         } else if(lvl == 7 && scseven < hp){
-            scrab += hp - scseven;
+            scrap += hp - scseven;
             scseven = hp;
         }
     }
@@ -85,7 +85,7 @@ public class StatsAndSettings implements Serializable {
         scseven = 0;
         currentlevel = 1;
         level = 1;
-        scrab = 0;
+        scrap = 0;
         BB = false;
         SG = false;
         AS = false;

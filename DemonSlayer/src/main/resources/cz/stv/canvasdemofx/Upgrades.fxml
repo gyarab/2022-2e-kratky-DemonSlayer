@@ -7,18 +7,19 @@
    <children>
       <VBox layoutX="14.0" layoutY="143.0" prefHeight="440.0" prefWidth="370.0">
          <children>
-             <Button fx:id="BB" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" text="Bounce Bullets (4 scrap)" />
-             <Button fx:id="FB" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" text="Faster Bullets (4 scrap)" />
-             <Button fx:id="MG" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" text="Machine Gun (4 scrap)" />
-             <Button fx:id="FMG" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" text="Faster Machine Gun (4 scrap)" />
-             <Button fx:id="SG" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" text="Shotgun (4 scrap)" />
-             <Button fx:id="FW" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" text="Faster Walking (4 scrap)" />
-             <Button fx:id="AS" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" text="Auto Shooting (4 scrap)" />
-             <Button fx:id="PB" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" text="Piercing Bullets (4 scrap)" />
-             <Button fx:id="G" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" text="Granite (4 scrap)" />
+             <Button fx:id="FMG" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" onAction="#buyFMG" text="Faster Machine Gun (6 scrap)" />
+             <Button fx:id="SG" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" onAction="#buySG" text="Shotgun (6 scrap)" />
+             <Button fx:id="AS" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" onAction="#buyAS" text="Auto Shooting (4 scrap)" />
+             <Button fx:id="MG" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" onAction="#buyMG" text="Machine Gun (4 scrap)" />
+             <Button fx:id="FW" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" onAction="#buyFW" text="Faster Walking (4 scrap)" />
+             <Button fx:id="PB" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" onAction="#buyPB" text="Piercing Bullets (3 scrap)" />
+             <Button fx:id="BB" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" onAction="#buyBB" text="Bounce Bullets (3 scrap)" />
+             <Button fx:id="G" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" onAction="#buyG" text="Granite (3 scrap)" />
+             <Button fx:id="FB" mnemonicParsing="false" prefHeight="50.0" prefWidth="370.0" onAction="#buyFB" text="Faster Bullets (2 scrap)" />
          </children>
       </VBox>
-      <Label layoutX="14.0" layoutY="14.0" text="Scrap: - " />
-      <Label layoutX="262.0" layoutY="14.0" prefHeight="18.0" prefWidth="122.0" text="There you can spend all your scrap" />
+      <Label fx:id="scrapCount" layoutX="14.0" layoutY="14.0" text="Scrap: - " />
+      <Label layoutX="14.0" layoutY="118.0" prefHeight="18.0" prefWidth="370.0" text="There you can spend all your scrap" />
+      <Button layoutX="313.0" layoutY="14.0" onAction="#exitUpgrades" mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0" text="Escape" />
    </children>
 </AnchorPane>

@@ -1,5 +1,5 @@
 package cz.stv.canvasdemofx;
-
+//https://docs.oracle.com/javafx/2/get_started/fxml_tutorial.htm
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -11,13 +11,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.Map;
+import java.util.Objects;
+
+import static javafx.scene.paint.Color.ORANGE;
 
 /**
  * Třída má za úkol spouštět levely
@@ -69,7 +73,37 @@ public class App extends Application implements Serializable {
     private CheckBox hardcoremode;
 
     @FXML
-    private ChoiceBox leveldifficulty;
+    private ChoiceBox<String> leveldifficulty;
+
+    @FXML
+    private Label scrapCount;
+
+    @FXML
+    private Button BB;
+
+    @FXML
+    private Button PB;
+
+    @FXML
+    private Button FB;
+
+    @FXML
+    private Button FMG;
+
+    @FXML
+    private Button MG;
+
+    @FXML
+    private Button G;
+
+    @FXML
+    private Button SG;
+
+    @FXML
+    private Button AS;
+
+    @FXML
+    private Button FW;
 
     /*
     * Zmáčknuté klávesy
@@ -96,7 +130,6 @@ public class App extends Application implements Serializable {
 
     /**
      * zapne 1. level
-     *
      * https://stackoverflow.com/questions/32922424/how-to-get-the-current-opened-stage-in-javafx - nová scéna
      * */
     @FXML
@@ -221,12 +254,21 @@ public class App extends Application implements Serializable {
      * Vypne options
      * */
     @FXML
-    public void exitOptions(ActionEvent event){
+    public void exitOptions(ActionEvent event) throws IOException {
         exitWindow((Stage)((Node) event.getSource()).getScene().getWindow());
     }
-    public void exitWindow(Stage stage){
+
+    /**
+     * vypne okno
+     * */
+    public static void exitWindow(Stage stage){
         stage.close();
     }
+
+    /**
+     * vypne upgrades
+     * */
+    public void exitUpgrades(ActionEvent event) {exitWindow((Stage)((Node) event.getSource()).getScene().getWindow());}
 
     /**
      * detekuje a přenastavuje klávesy v hlavním menu
@@ -358,13 +400,16 @@ public class App extends Application implements Serializable {
     /**
      * zapne nové okno s nastaveními
      */
-    public void settings() throws IOException {
+    public static void settings() throws IOException {
         Stage options = new Stage();
         scene = new Scene(loadFXML("Options"));
         options.setScene(scene);
         options.show();
     }
 
+    /**
+     * zapne nové okno s upgradama
+     * */
     private void upgrade() throws IOException {
         Stage options = new Stage();
         scene = new Scene(loadFXML("Upgrades"));
@@ -375,14 +420,32 @@ public class App extends Application implements Serializable {
     @FXML
     public void renameAllButtons(){
         StatsAndSettings s = getAll();
-        uppressed.setText(s.up.getChar());
-        downpressed.setText(s.down.getChar());
-        leftpressed.setText(s.left.getChar());
-        rightpressed.setText(s.right.getChar());
-        granatepressed.setText(s.granate.getChar());
-        upgrades.setText(s.upgrade.getChar());
-        escape.setText(s.escape.getChar());
+
+        if(!s.hardcore){
+            if (Objects.equals(leveldifficulty.getValue(), "Easy")){
+                s.difficulty = 1;
+            } else if (Objects.equals(leveldifficulty.getValue(), "Normal")){
+                s.difficulty = 2;
+            } else if(Objects.equals(leveldifficulty.getValue(), "Hard")){
+                s.difficulty = 3;
+            }
+        }
+
+        uppressed.setText(s.up.getName());
+        downpressed.setText(s.down.getName());
+        leftpressed.setText(s.left.getName());
+        rightpressed.setText(s.right.getName());
+        granatepressed.setText(s.granate.getName());
+        upgrades.setText(s.upgrade.getName());
+        escape.setText(s.escape.getName());
         hardcoremode.setSelected(s.hardcore);
+        if(s.difficulty == 1){
+            leveldifficulty.setValue("Easy");
+        }else if (s.difficulty == 2){
+            leveldifficulty.setValue("Normal");
+        }else if (s.difficulty == 3){
+            leveldifficulty.setValue("Hard");
+        }
         saveAll(s);
     }
 
@@ -428,15 +491,6 @@ public class App extends Application implements Serializable {
         b.setTextFill(Color.RED);
     }
 
-
-    /**
-     * obnový obrazovku
-     * */
-    @FXML
-    public void reset() {
-
-    }
-
     /**
      * detekuje klávesy stlačené při upgrades
      * */
@@ -468,7 +522,7 @@ public class App extends Application implements Serializable {
     public void setHardcore() {
         StatsAndSettings s = getAll();
         s.hardcore = hardcoremode.isSelected();
-        System.out.println(hardcoremode.isCache());
+        s.difficulty = 3;
         saveAll(s);
     }
 
@@ -480,5 +534,206 @@ public class App extends Application implements Serializable {
         StatsAndSettings s = getAll();
         s.resetBinds();
         saveAll(s);
+    }
+
+    /**
+     * obnový upgrades
+     * */
+    @FXML
+    public void reset() {
+        StatsAndSettings s = getAll();
+
+        if(s.scrap >= 6){
+            setStyleGreen(SG);
+            setStyleGreen(FMG);
+        } else {
+            setStyleRed(SG);
+            setStyleRed(FMG);
+        }
+
+        if(s.scrap >= 4){
+            setStyleGreen(AS);
+            setStyleGreen(FW);
+            setStyleGreen(MG);
+        } else {
+            setStyleRed(AS);
+            setStyleRed(FW);
+            setStyleRed(MG);
+        }
+
+        if(s.scrap >= 3){
+            setStyleGreen(PB);
+            setStyleGreen(BB);
+            setStyleGreen(G);
+        } else {
+            setStyleRed(PB);
+            setStyleRed(BB);
+            setStyleRed(G);
+        }
+
+        if(s.scrap >= 2){
+            setStyleGreen(FB);
+        } else {
+            setStyleRed(FB);
+        }
+
+        if(s.BB){setStyleOrange(BB);}
+        if(s.G){setStyleOrange(G);}
+        if(s.AS){setStyleOrange(AS);}
+        if(s.FW){setStyleOrange(FW);}
+        if(s.FMG){setStyleOrange(FMG);}
+        if(s.MG){setStyleOrange(MG);}
+        if(s.PB){setStyleOrange(PB);}
+        if(s.FB){setStyleOrange(FB);}
+        if(s.SG){setStyleOrange(SG);}
+
+        scrapCount.setText("Scrap: " + s.scrap);
+    }
+
+    /**
+     * Nastavý pozadí tlačítka na oranžovou
+     * */
+    public void setStyleOrange(Button b){
+        b.setStyle("-fx-background-color: Orange");
+    }
+
+    /**
+     * Nastavý pozadí tlačítka na oranžovou
+     * */
+    public void setStyleGreen(Button b){
+        b.setStyle("-fx-background-color: Green");
+    }
+
+    /**
+     * Nastavý pozadí tlačítka na oranžovou
+     * */
+    public void setStyleRed(Button b){
+        b.setStyle("-fx-background-color: Red");
+    }
+
+    /**
+     * koupí Faster Machine Gun
+     * */
+    @FXML
+    public void buyFMG() {
+        StatsAndSettings s = getAll();
+
+        if(s.scrap >= 6 && !s.FMG){
+            s.scrap -= 6;
+            s.FMG = true;
+            saveAll(s);
+        }
+    }
+
+    /**
+     * koupí Shotgun
+     * */
+    @FXML
+    public void buySG() {
+        StatsAndSettings s = getAll();
+
+        if(s.scrap >= 6 && !s.SG){
+            s.scrap -= 6;
+            s.SG = true;
+            saveAll(s);
+        }
+    }
+
+    /**
+     * koupí Machine Gun
+     * */
+    @FXML
+    public void buyMG() {
+        StatsAndSettings s = getAll();
+
+        if(s.scrap >= 4 && !s.MG){
+            s.scrap -= 4;
+            s.MG = true;
+            saveAll(s);
+        }
+    }
+
+    /**
+     * koupí Auto Shooting
+     * */
+    @FXML
+    public void buyAS() {
+        StatsAndSettings s = getAll();
+
+        if(s.scrap >= 4 && !s.AS){
+            s.scrap -= 4;
+            s.AS = true;
+            saveAll(s);
+        }
+    }
+
+    /**
+     * koupí Faster Walking
+     * */
+    @FXML
+    public void buyFW() {
+        StatsAndSettings s = getAll();
+
+        if(s.scrap >= 4 && !s.FW){
+            s.scrap -= 4;
+            s.FW = true;
+            saveAll(s);
+        }
+    }
+
+    /**
+     * koupí Faster Machine Gun
+     * */
+    @FXML
+    public void buyPB() {
+        StatsAndSettings s = getAll();
+
+        if(s.scrap >= 3 && !s.PB){
+            s.scrap -= 3;
+            s.PB = true;
+            saveAll(s);
+        }
+    }
+
+    /**
+     * koupí Faster Machine Gun
+     * */
+    @FXML
+    public void buyBB() {
+        StatsAndSettings s = getAll();
+
+        if(s.scrap >= 3 && !s.BB){
+            s.scrap -= 3;
+            s.BB = true;
+            saveAll(s);
+        }
+    }
+
+    /**
+     * koupí Faster Machine Gun
+     * */
+    @FXML
+    public void buyG() {
+        StatsAndSettings s = getAll();
+
+        if(s.scrap >= 3 && !s.G){
+            s.scrap -= 3;
+            s.G = true;
+            saveAll(s);
+        }
+    }
+
+    /**
+     * koupí Faster Machine Gun
+     * */
+    @FXML
+    public void buyFB() {
+        StatsAndSettings s = getAll();
+
+        if(s.scrap >= 2 && !s.FB){
+            s.scrap -= 2;
+            s.FB = true;
+            saveAll(s);
+        }
     }
 }

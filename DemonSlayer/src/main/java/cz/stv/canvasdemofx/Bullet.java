@@ -11,16 +11,18 @@ public class Bullet {
     double positiony;
     double speed;  //rychlost
     boolean bounce;
+    boolean piercing;
 
     /**
      * Vypočítá všechny výchozí hodnoty střely
      * */
-    Bullet(double xplayer, double yplayer, double xmouse, double ymouse, boolean fast, boolean bounce) {
+    Bullet(double xplayer, double yplayer, double xmouse, double ymouse, boolean fast, boolean bounce, boolean piercing) {
         this.bounce = bounce;
+        this.piercing = piercing;
         if (fast) {
-            speed = 1; //rychlost střely když je aktivován perk se zrychlením střely
+            speed = 2; //rychlost střely když je aktivován perk se zrychlením střely
         } else {
-            speed = 0.85; //rychlost střely normálně
+            speed = 1.5; //rychlost střely normálně
         }
 
         positionx = xplayer; //počátek střely v bodě x (poloha hráče při střelbě na ose x)
