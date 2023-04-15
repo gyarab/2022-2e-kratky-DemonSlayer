@@ -8,9 +8,9 @@
    <children>
       <Canvas fx:id="canvas" height="600.0" layoutX="15.0" layoutY="15.0" onMouseDragged="#onMouseDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onMousePressed" onMouseReleased="#onMouseReleased" width="1200.0" AnchorPane.bottomAnchor="121.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="14.0" />
       <Button fx:id="escape" layoutX="1366.0" layoutY="14.0" mnemonicParsing="false" onAction="#pauseTheGame" prefHeight="60.0" prefWidth="100.0" text="ESC" />
-      <Canvas fx:id="hpbar" height="150.0" layoutX="15.0" layoutY="616.0" onMouseDragged="#onMouseDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onMousePressed" onMouseReleased="#onMouseReleased" width="600.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="865.0" AnchorPane.topAnchor="616.0" />
-      <Button fx:id="reset" onAction="#resetTheLevel" layoutX="1366.0" layoutY="74.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Reset" />
-      <Button fx:id="backtomenu" onAction="#backToMenu" layoutX="1366.0" layoutY="100.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Main Manu" />
-      <Button fx:id="exitbutton" onAction="#exitTheApp" layoutX="1366.0" layoutY="126.0" mnemonicParsing="false" prefWidth="100.0" text="Exit" />
+      <Canvas fx:id="hpbar" height="138.0" layoutX="15.0" layoutY="628.0" onMouseDragged="#onMouseDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onMousePressed" onMouseReleased="#onMouseReleased" width="675.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="790.0" AnchorPane.topAnchor="628.0" />
+      <Button fx:id="reset" layoutX="1366.0" layoutY="74.0" mnemonicParsing="false" onAction="#resetTheLevel" prefHeight="26.0" prefWidth="100.0" text="Reset" />
+      <Button fx:id="backtomenu" layoutX="1366.0" layoutY="100.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="26.0" prefWidth="100.0" text="Main Manu" />
+      <Button fx:id="exitbutton" layoutX="1366.0" layoutY="126.0" mnemonicParsing="false" onAction="#exitTheApp" prefWidth="100.0" text="Exit" />
    </children>
 </AnchorPane>

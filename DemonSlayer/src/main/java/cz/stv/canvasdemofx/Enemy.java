@@ -11,16 +11,20 @@ public class Enemy {
     boolean faster;
     boolean tank;
     int hp = 3;
+    boolean boss;
     double speed = 0.60;
 
 
-    Enemy(int count, long time, boolean range, boolean faster, boolean tank) {
+    Enemy(int count, long time, boolean range, boolean faster, boolean tank, boolean boss) {
         Date date = new Date();
         time = date.getTime() - time;
+        this.boss = boss;
         this.tank = tank;
-        if(tank){hp*=2;}
         this.range = range;
         this.faster = faster;
+
+
+        if(tank){hp*=2;}
         if(faster){
             speed += speed * 0.25;
         }
@@ -41,6 +45,16 @@ public class Enemy {
 
         enemycenterx = enemyx + 5;
         enemycentery = enemyy + 5;
+
+        if(boss){
+            this.tank = false;
+            this.range = false;
+            this.faster = false;
+            hp = 2000;
+            speed /= 2;
+            enemycenterx = enemyx + 10;
+            enemycentery = enemyy + 10;
+        }
     }
 
     /**

@@ -495,10 +495,8 @@ public class App extends Application implements Serializable {
      * detekuje klávesy stlačené při upgrades
      * */
     @FXML
-    public void resetCharacer() {
-        StatsAndSettings s = getAll();
-        s.resetCharacter();
-        saveAll(s);
+    public void resetCharacer(ActionEvent event) throws IOException {
+        WarningWindow.openWarning(4, event);
     }
 
     /**
