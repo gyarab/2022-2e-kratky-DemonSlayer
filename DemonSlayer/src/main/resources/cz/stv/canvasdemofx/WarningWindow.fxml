@@ -5,18 +5,16 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.stv.canvasdemofx.WarningWindow">
-   <children>
-      <Button layoutX="100.0" layoutY="300.0" mnemonicParsing="false" onAction="#Accept" prefHeight="50.0" prefWidth="50.0" text="Yes" />
-      <Button layoutX="200.0" layoutY="300.0" mnemonicParsing="false" onAction="#BackToGame" prefHeight="50.0" prefWidth="50.0" text="No" />
-      <Label layoutX="109.0" layoutY="99.0" prefHeight="35.0" prefWidth="142.0" text="data will be lost." textAlignment="CENTER">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="103.0" layoutY="43.0" prefHeight="70.0" prefWidth="155.0" text="If you press yes," textAlignment="CENTER">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </Label>
-   </children>
+   <Button layoutX="100.0" layoutY="300.0" mnemonicParsing="false" onAction="#Accept" prefHeight="50.0" prefWidth="50.0" text="Yes" />
+   <Button layoutX="200.0" layoutY="300.0" mnemonicParsing="false" onAction="#BackToGame" prefHeight="50.0" prefWidth="50.0" text="No" />
+   <Label layoutX="109.0" layoutY="99.0" prefHeight="35.0" prefWidth="142.0" text="data will be lost." textAlignment="CENTER">
+      <font>
+         <Font name="Arial" size="20.0" />
+      </font>
+   </Label>
+   <Label layoutX="103.0" layoutY="43.0" prefHeight="70.0" prefWidth="155.0" text="If you press yes," textAlignment="CENTER">
+      <font>
+         <Font name="Arial" size="20.0" />
+      </font>
+   </Label>
 </AnchorPane>

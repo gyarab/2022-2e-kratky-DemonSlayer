@@ -6,11 +6,12 @@
 
 <AnchorPane id="AnchorPane" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="780.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.stv.canvasdemofx.MainForm">
    <children>
-      <Canvas fx:id="canvas" height="600.0" layoutX="15.0" layoutY="15.0" onMouseDragged="#onMouseDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onMousePressed" onMouseReleased="#onMouseReleased" width="1200.0" AnchorPane.bottomAnchor="121.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="14.0" />
-      <Button fx:id="escape" layoutX="1366.0" layoutY="14.0" mnemonicParsing="false" onAction="#pauseTheGame" prefHeight="60.0" prefWidth="100.0" text="ESC" />
+      <Canvas fx:id="canvas" height="600.0" layoutX="15.0" layoutY="14.0" onMouseDragged="#onMouseDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onMousePressed" onMouseReleased="#onMouseReleased" width="1200.0" AnchorPane.bottomAnchor="166.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="265.0" AnchorPane.topAnchor="14.0" />
+      <Button fx:id="escape" layoutX="1366.0" layoutY="14.0" mnemonicParsing="false" onAction="#pauseGameAction" prefHeight="60.0" prefWidth="100.0" text="ESC" />
       <Canvas fx:id="hpbar" height="138.0" layoutX="15.0" layoutY="628.0" onMouseDragged="#onMouseDragged" onMouseMoved="#onMouseMoved" onMousePressed="#onMousePressed" onMouseReleased="#onMouseReleased" width="675.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="790.0" AnchorPane.topAnchor="628.0" />
       <Button fx:id="reset" layoutX="1366.0" layoutY="74.0" mnemonicParsing="false" onAction="#resetTheLevel" prefHeight="26.0" prefWidth="100.0" text="Reset" />
       <Button fx:id="backtomenu" layoutX="1366.0" layoutY="100.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="26.0" prefWidth="100.0" text="Main Manu" />
       <Button fx:id="exitbutton" layoutX="1366.0" layoutY="126.0" mnemonicParsing="false" onAction="#exitTheApp" prefWidth="100.0" text="Exit" />
+      <Label fx:id="scrapcaunt" layoutX="1223.0" layoutY="739.0" prefHeight="26.0" prefWidth="242.0" text="Number of scrap gotten from this level: - " />
    </children>
 </AnchorPane>

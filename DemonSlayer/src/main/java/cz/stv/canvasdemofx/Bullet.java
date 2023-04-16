@@ -1,7 +1,5 @@
 package cz.stv.canvasdemofx;
 
-import javafx.scene.Scene;
-
 public class Bullet {
 
 
@@ -87,20 +85,11 @@ public class Bullet {
         }
     }
 
-
-    public double getXMove(){
-        return xmove;
-    }
-
     /**
      * Posune střelu
      * */
     public void moved(){
         positionx = xmove + positionx;
         positiony = ymove + positiony;
-    }
-
-    public double getYMove(){
-        return ymove;
     }
 }

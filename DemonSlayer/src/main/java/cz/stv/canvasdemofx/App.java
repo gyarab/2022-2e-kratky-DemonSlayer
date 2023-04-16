@@ -18,10 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.Map;
 import java.util.Objects;
-
-import static javafx.scene.paint.Color.ORANGE;
 
 /**
  * Třída má za úkol spouštět levely
@@ -115,6 +112,9 @@ public class App extends Application implements Serializable {
     boolean changegranate = false;
     boolean changeescape = false;
     boolean changeupgrade = false;
+
+    static boolean ingame = false;
+    static Stage stage = null;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -254,21 +254,28 @@ public class App extends Application implements Serializable {
      * Vypne options
      * */
     @FXML
-    public void exitOptions(ActionEvent event) throws IOException {
-        exitWindow((Stage)((Node) event.getSource()).getScene().getWindow());
+    public void exitOptions(ActionEvent e) throws IOException {
+        exitWindow((Stage)((Node) e.getSource()).getScene().getWindow());
     }
 
     /**
      * vypne okno
      * */
-    public static void exitWindow(Stage stage){
-        stage.close();
+    public static void exitWindow(Stage s) throws IOException {
+        if(ingame){
+            MainForm.newgame = false;
+            scene = new Scene(loadFXML("MainForm"));
+            stage.setScene(scene);
+            stage.show();
+            ingame = false;
+        }
+        s.close();
     }
 
     /**
      * vypne upgrades
      * */
-    public void exitUpgrades(ActionEvent event) {exitWindow((Stage)((Node) event.getSource()).getScene().getWindow());}
+    public void exitUpgrades(ActionEvent event) throws IOException {exitWindow((Stage)((Node) event.getSource()).getScene().getWindow());}
 
     /**
      * detekuje a přenastavuje klávesy v hlavním menu
@@ -281,7 +288,7 @@ public class App extends Application implements Serializable {
         StatsAndSettings s = getAll();
 
         if (key == s.escape) {
-            settings();
+            settings(false, (Stage)((Node) event.getSource()).getScene().getWindow());
         }else if(key == s.upgrade){
             upgrade();
         }
@@ -335,7 +342,7 @@ public class App extends Application implements Serializable {
      * detekuje klávesy stlačené při upgrades
      * */
     @FXML
-    public void onUpPressed(KeyEvent event) {
+    public void onUpPressed(KeyEvent event) throws IOException {
         KeyCode key = event.getCode();
         StatsAndSettings s = getAll();
 
@@ -395,12 +402,14 @@ public class App extends Application implements Serializable {
     /**
      * detekuje klávesu na upgradu
      * */
-    public void changeUpgrade(ActionEvent actionEvent) {changeupgrade = true;}
+    public void changeUpgrade() {changeupgrade = true;}
 
     /**
      * zapne nové okno s nastaveními
      */
-    public static void settings() throws IOException {
+    public static void settings(boolean a, Stage s) throws IOException {
+        stage = s;
+        ingame = a;
         Stage options = new Stage();
         scene = new Scene(loadFXML("Options"));
         options.setScene(scene);
@@ -460,9 +469,7 @@ public class App extends Application implements Serializable {
             out.writeObject(s);
             out.close();
             f.close();
-        } catch (IOException e) {
-
-        }
+        } catch (IOException ignored) {}
     }
 
     /**
@@ -503,13 +510,13 @@ public class App extends Application implements Serializable {
      * otevře settings
      * */
     public void openSettings(ActionEvent actionEvent) throws IOException {
-        settings();
+        settings(false, (Stage)((Node) actionEvent.getSource()).getScene().getWindow());
     }
 
     /**
      * upgrades settings
      * */
-    public void openUpgrades(ActionEvent actionEvent) throws IOException {
+    public void openUpgrades() throws IOException {
         upgrade();
     }
 

@@ -1,10 +1,9 @@
 package cz.stv.canvasdemofx;
 
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 
-import java.io.FileOutputStream;
 import java.io.Serializable;
-import java.security.Key;
 
 public class StatsAndSettings implements Serializable {
     int currentlevel = 1;
@@ -95,5 +94,25 @@ public class StatsAndSettings implements Serializable {
         FB = false;
         FW = false;
         G = false;
+    }
+
+    public int getScrapInLevel(){
+        switch(currentlevel){
+            case(1):
+                return scone;
+            case(2):
+                return sctwo;
+            case(3):
+                return scthree;
+            case(4):
+                return scfour;
+            case(5):
+                return scfive;
+            case(6):
+                return scsix;
+            case(7):
+                return scseven;
+        }
+        return 0;
     }
 }

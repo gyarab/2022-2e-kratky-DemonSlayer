@@ -41,7 +41,6 @@ public class WarningWindow {
             scene = new Scene(loadFXML("MainForm"));
             stage.setScene(scene);
             stage.show();
-
         } else if(warningoption == 2){
             Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(loadFXML("MainMenu"));
@@ -60,8 +59,13 @@ public class WarningWindow {
     /**
      * zruší daný příklaz, kvůli kterému se otevřelo příkazové okno
      * */
-    public void BackToGame(ActionEvent event) throws IOException {
-        App.exitWindow((Stage)((Node) event.getSource()).getScene().getWindow());
+    public void BackToGame(ActionEvent e) throws IOException {
+        App.exitWindow((Stage)((Node) e.getSource()).getScene().getWindow());
         warningoption = 0;
+        MainForm.newgame = false;
+        Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(loadFXML("MainForm"));
+        stage.setScene(scene);
+        stage.show();
     }
 }
