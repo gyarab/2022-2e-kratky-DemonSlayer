@@ -36,7 +36,12 @@ public class MainForm extends Application implements Initializable {
       try {
         if(numberofinteruction == 5){
           numberofinteruction = 0;
-          collisions();
+          NewLine t = new NewLine();
+          t.start();
+        }
+        if(hp != hpold){
+          drawHpBar();
+          hpold = hp;
         }
         draw();
         numberofinteruction++;
@@ -73,18 +78,27 @@ public class MainForm extends Application implements Initializable {
       StatsAndSettings s = App.getAll();
       scrapcaunt.setText("Number of scrap gotten from this level: " + s.getScrapInLevel());
 
+      slayerx = 500.0;
+      slayery = 500.0;
+      slayercenterx = slayerx + 7.5;
+      slayercentery = slayery + 7.5;
+      gunx = slayerx + 4;
+      guny = slayery;
+
       for (int a = 0; a < enemys.size(); ) {
         enemys.remove(a);
       }
       for (int a = 0; a < projecriles.size(); ) {
         projecriles.remove(a);
       }
+      hpold = 5;
       hp = 5;
 
       level = s.currentlevel;
       difficulty = s.difficulty;
 
       if (s.hardcore) {
+        hpold = 1;
         hp = 1;
         difficulty = 3;
       }
@@ -97,10 +111,6 @@ public class MainForm extends Application implements Initializable {
 
       if (s.level > 3) {
         spawnrate = spawnrate / 2;
-      }
-
-      if (s.hardcore) {
-        hp = 1;
       }
 
       bouncemode = s.BB;
@@ -180,6 +190,7 @@ public class MainForm extends Application implements Initializable {
   * základní parametry levelu
   * */
   int level = 1;
+  int hpold = 5;
   static int hp = 5;
   int difficulty = 2;
   int spawnrate = 1500;
@@ -193,7 +204,7 @@ public class MainForm extends Application implements Initializable {
   /**
    * vyřeší včechny kolize
    * */
-  void collisions(){
+  static void collisions(){
     int b = projecriles.toArray().length;
     for (int a = 0; a < b; a++) {
       if(projecriles.get(a).positiony > 600){
@@ -235,6 +246,15 @@ public class MainForm extends Application implements Initializable {
       }
     }
 
+    for(int a = 0; a < enemys.size();a++){
+      for(int c = a + 1; c < enemys.size();c++){
+        if(10 > enemys.get(a).enemycenterx - enemys.get(c).enemycenterx && enemys.get(a).enemycenterx - enemys.get(c).enemycenterx > -10 && 10 > enemys.get(a).enemycentery - enemys.get(c).enemycentery && enemys.get(a).enemycentery - enemys.get(c).enemycentery > -10) {
+          MainForm.enemys.get(a).moved(enemys.get(c).enemyx, enemys.get(c).enemyy, false);
+          MainForm.enemys.get(c).moved(enemys.get(a).enemyx, enemys.get(a).enemyy, false);
+        }
+      }
+    }
+
     int d = enemys.toArray().length;
     for(int c = 0; c < d;c++){
       //Ubírá životy hráče
@@ -244,7 +264,7 @@ public class MainForm extends Application implements Initializable {
           d--;
           c--;
           hp--;
-          drawHpBar();
+
         }
         //Zabíjí jednotky a ubírá jim životy
         for(int f = 0; f < b; f++){
@@ -272,7 +292,6 @@ public class MainForm extends Application implements Initializable {
           d--;
           c--;
           hp = 0;
-          drawHpBar();
         }
         //Zabíjí jednotky a ubírá jim životy
         for(int f = 0; f < b; f++){
@@ -302,10 +321,12 @@ public class MainForm extends Application implements Initializable {
    * Volá funkce co kreslí a posouvá objekty (hráč, jednotky, střely)
    * */
   @FXML
-  private void draw() throws IOException, InterruptedException {
+  public void draw() throws IOException, InterruptedException {
 
     if(enemysummoncaountdown == 0){
-      summonEnemy();
+      if(enemys.size() <= 15){
+        summonEnemy();
+      }
       if(granattimer > 0){
         granattimer--;
       }else{
@@ -320,15 +341,6 @@ public class MainForm extends Application implements Initializable {
       step = 1.1;
     }else{
       step = 0.7;
-    }
-
-    for(int a = 0; a < enemys.size();a++){
-      for(int c = a + 1; c < enemys.size();c++){
-        if(10 > enemys.get(a).enemycenterx - enemys.get(c).enemycenterx && enemys.get(a).enemycenterx - enemys.get(c).enemycenterx > -10 && 10 > enemys.get(a).enemycentery - enemys.get(c).enemycentery && enemys.get(a).enemycentery - enemys.get(c).enemycentery > -10) {
-          MainForm.enemys.get(a).moved(enemys.get(c).enemyx, enemys.get(c).enemyy, false);
-          MainForm.enemys.get(c).moved(enemys.get(a).enemyx, enemys.get(a).enemyy, false);
-        }
-      }
     }
 
     if (wpressed && slayery > 25){
@@ -560,17 +572,18 @@ public class MainForm extends Application implements Initializable {
       shootnow = false;
     }
 
-    if (caountdown == 0) {
+    if (caountdown == 0 && projecriles.size() <= 30) {
       projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse, fastmode, bouncemode,piercingmode));
 
       caountdown += 100;
 
       if(mashinegunmode){
-        caountdown /= 2;
+        caountdown /= 4;
+        caountdown *= 3;
       }
 
       if(ultramashinegunmode){
-        caountdown /= 3;
+        caountdown /= 2;
       }
 
       if (shotgunmode) {
@@ -766,25 +779,25 @@ public class MainForm extends Application implements Initializable {
         enemys.add(new Enemy(1, time, false, false, false, true));
       }
 
-      if(enemys.get(0).hp >= 180){
+      if(enemys.get(0).hp >= 1800){
         summonPack(count, false, false, false);
       }
-      if(enemys.get(0).hp < 180 && enemys.get(0).hp >= 150){
+      if(enemys.get(0).hp < 1800 && enemys.get(0).hp >= 1500){
         summonPack(count, false, true, false);
       }
-      if(enemys.get(0).hp < 150 && enemys.get(0).hp >= 120){
+      if(enemys.get(0).hp < 1500 && enemys.get(0).hp >= 1200){
         summonPack(count, true, false, false);
       }
-      if(enemys.get(0).hp < 120 && enemys.get(0).hp >= 100){
+      if(enemys.get(0).hp < 1200 && enemys.get(0).hp >= 1000){
         summonPack(count, false, false, true);
       }
-      if(enemys.get(0).hp < 100 && enemys.get(0).hp >= 70){
+      if(enemys.get(0).hp < 1000 && enemys.get(0).hp >= 700){
         summonPack(count, true, true, false);
       }
-      if(enemys.get(0).hp < 70 && enemys.get(0).hp >= 40){
+      if(enemys.get(0).hp < 700 && enemys.get(0).hp >= 400){
         summonPack(count, true, false, true);
       }
-      if(enemys.get(0).hp < 40 && enemys.get(0).hp > 0){
+      if(enemys.get(0).hp < 400 && enemys.get(0).hp > 0){
         summonPack(count, false, true, true);
       }
 

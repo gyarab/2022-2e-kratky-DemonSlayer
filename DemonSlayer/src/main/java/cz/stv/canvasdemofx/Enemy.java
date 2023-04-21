@@ -87,5 +87,9 @@ public class Enemy {
 
         enemycenterx = enemyx + 5;
         enemycentery = enemyy + 5;
+        if(boss){
+            enemycenterx = enemyx + 10;
+            enemycentery = enemyy + 10;
+        }
     }
 }
