@@ -324,7 +324,7 @@ public class MainForm extends Application implements Initializable {
   public void draw() throws IOException, InterruptedException {
 
     if(enemysummoncaountdown == 0){
-      if(enemys.size() <= 15){
+      if(enemys.size() <= 11){
         summonEnemy();
       }
       if(granattimer > 0){
@@ -475,7 +475,7 @@ public class MainForm extends Application implements Initializable {
     }else if(range && faster){
       gc.setFill(Color.LIGHTCYAN);
     }else if(tank){
-      gc.setFill(Color.BROWN);
+      gc.setFill(Color.BISQUE);
     }else if(faster){
       gc.setFill(Color.YELLOW);
     }else if(range){
@@ -572,7 +572,7 @@ public class MainForm extends Application implements Initializable {
       shootnow = false;
     }
 
-    if (caountdown == 0 && projecriles.size() <= 30) {
+    if (caountdown == 0 && projecriles.size() <= 25) {
       projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse, fastmode, bouncemode,piercingmode));
 
       caountdown += 100;
@@ -649,50 +649,39 @@ public class MainForm extends Application implements Initializable {
         summonPack(count*3, false, true, false);
         summonPack(count*2, false, true, false);
       }else if(count < 15){
-        summonPack(count, false, true, false);
-        summonPack(count*3, false, true, false);
+        summonPack(count*3, false, false, true);
         summonPack(count*2, false, true, false);
-      }else if(count == 15){
-        summonPack(count*3, false, false, false);
+      }else if(count == 16){
         summonPack(count*5, false, true, false);
         summonPack(count*7, false, false, true);
         summonPack(count*2, false, true, false);
         summonPack(count*11, false, true, false);
       }
 
-      if(count > 15 && enemys.size() == 0){
+      if(count > 16 && enemys.size() == 0){
         gameOver(true);
       }
       count++;
     }else if(level == 4){
       if(count < 3){
-        summonPack(count, false, false, false);
-        summonPack(count*5, false, false, false);
+        summonPack(count*5, false, true, false);
       }else if(count < 8){
-        summonPack(count, false, false, false);
-        summonPack(count*5, false, false, false);
+        summonPack(count*5, false, true, false);
         summonPack(count*2, false, true, false);
-      }else if(count < 13){
-        summonPack(count, false, false, false);
-        summonPack(count*3, false, false, false);
+      }else if(count < 15){
         summonPack(count*2, false, true, false);
         summonPack(count*5, false, false, true);
-      }else if(count < 15){
+      }else if(count < 19){
         summonPack(count, false, true, false);
         summonPack(count*2, false, true, false);
-        summonPack(count*3, false, false, true);
-        summonPack(count*5, false, false, true);
-      }else if(count == 15){
-        summonPack(count, false, false, false);
-        summonPack(count*3, false, false, false);
+      }else if(count == 20){
         summonPack(count*3, true, false, false);
-        summonPack(count*5, false, false, true);
         summonPack(count*7, false, false, true);
         summonPack(count*2, false, true, false);
         summonPack(count*11, false, true, true);
       }
 
-      if(count > 15 && enemys.size() == 0){
+      if(count > 20 && enemys.size() == 0){
         gameOver(true);
       }
       count++;
@@ -702,14 +691,10 @@ public class MainForm extends Application implements Initializable {
         summonPack(count*5, false, true , true);
         summonPack(count*2, false, false, true);
       }else if(count < 8){
-        summonPack(count, false, false, false);
         summonPack(count, true, false, false);
         summonPack(count*5, false, true, true);
-        summonPack(count*2, true, false, false);
         summonPack(count*3, false, true, true);
       }else if(count < 13){
-        summonPack(count*11, false, false, false);
-        summonPack(count, false, false, false);
         summonPack(count*7, false, false, false);
         summonPack(count*3, true, true, false);
         summonPack(count*2, false, true, true);
@@ -717,21 +702,17 @@ public class MainForm extends Application implements Initializable {
       }else if(count < 15){
         summonPack(count, false, true, false);
         summonPack(count*11, false, false, true);
-        summonPack(count*5, false, false, true);
         summonPack(count*3, true, true, false);
-        summonPack(count*2, false, true, true);
         summonPack(count*7, false, true, true);
-      }else if(count == 15){
-        summonPack(count, false, false, false);
+      }else if(count == 16){
         summonPack(count*3, false, false, false);
         summonPack(count*3, true, false, true);
         summonPack(count*5, false, false, true);
-        summonPack(count*7, false, false, true);
         summonPack(count*2, false, true, false);
         summonPack(count*11, true, true, false);
       }
 
-      if(count > 15 && enemys.size() == 0){
+      if(count > 16 && enemys.size() == 0){
         gameOver(true);
       }
       count++;
@@ -742,14 +723,10 @@ public class MainForm extends Application implements Initializable {
         summonPack(count*2, true, true, false);
       }else if(count < 8){
         summonPack(count, true, false, false);
-        summonPack(count, true, false, false);
-        summonPack(count*5, false, true, true);
         summonPack(count*2, true, true, false);
         summonPack(count*3, false, true, true);
       }else if(count < 13){
         summonPack(count*11, false, true, false);
-        summonPack(count, false, false, true);
-        summonPack(count*7, true, true, false);
         summonPack(count*3, true, true, false);
         summonPack(count*2, false, true, true);
         summonPack(count*5, false, true, true);
@@ -758,11 +735,8 @@ public class MainForm extends Application implements Initializable {
         summonPack(count*11, true, false, true);
         summonPack(count*5, false, true, true);
         summonPack(count*3, true, true, false);
-        summonPack(count*2, false, true, true);
         summonPack(count*7, false, true, true);
-      }else if(count == 15){
-        summonPack(count, false, true, false);
-        summonPack(count*3, true, false, false);
+      }else if(count == 16){
         summonPack(count*3, true, false, true);
         summonPack(count*5, false, true, true);
         summonPack(count*7, true, false, true);
@@ -770,7 +744,7 @@ public class MainForm extends Application implements Initializable {
         summonPack(count*11, true, true, false);
       }
 
-      if(count > 15 && enemys.size() == 0){
+      if(count > 16 && enemys.size() == 0){
         gameOver(true);
       }
       count++;
