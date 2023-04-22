@@ -62,6 +62,10 @@ public class StatsAndSettings implements Serializable {
         }
     }
 
+
+    /**
+     * Slouží k resetování nastavených káves
+     * */
     public void resetBinds(){
         up = KeyCode.W;
         down = KeyCode.S;
@@ -74,6 +78,9 @@ public class StatsAndSettings implements Serializable {
         upgrade = KeyCode.U;
     }
 
+    /**
+     * Slouží k resetování postupu
+     * */
     public void resetCharacter(){
         scone = 0;
         sctwo = 0;

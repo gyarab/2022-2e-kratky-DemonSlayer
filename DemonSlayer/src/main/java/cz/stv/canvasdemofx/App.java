@@ -116,6 +116,9 @@ public class App extends Application implements Serializable {
     static boolean ingame = false;
     static Stage stage = null;
 
+    /**
+     * zapne hru
+     * */
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("MainForm"));

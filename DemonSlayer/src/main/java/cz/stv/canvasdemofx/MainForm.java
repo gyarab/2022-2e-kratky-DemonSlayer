@@ -30,6 +30,10 @@ import javafx.util.Duration;
 public class MainForm extends Application implements Initializable {
   private EventHandler<ActionEvent> timingHandler = new EventHandler<ActionEvent>() {
 
+
+    /**
+     * slouží k spouštění kolizí pohybu a malování
+     * */
     @Override
     public void handle(ActionEvent event)
     {
@@ -70,12 +74,36 @@ public class MainForm extends Application implements Initializable {
   private Label scrapcaunt;
 
   /**
-   * Nastavuje fps a
+   * Nastavuje fps a nastavení hry
    * */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
+    StatsAndSettings s = App.getAll();
+
+    bouncemode = s.BB;
+    piercingmode = s.PB;
+    granatemode = s.G;
+    fastmode = s.FB;
+    mashinegunmode = s.MG;
+    ultramashinegunmode = s.FMG;
+    shotgunmode = s.SG;
+    autoshootingmode = s.AS;
+    fastwalkingmode = s.FW;
+
+    level = s.currentlevel;
+    difficulty = s.difficulty;
+
+    if (difficulty == 1) {
+      spawnrate += 500;
+    } else if (difficulty == 3) {
+      spawnrate -= 200;
+    }
+
+    if (s.level > 3) {
+      spawnrate = spawnrate / 2;
+    }
+
     if(newgame) {
-      StatsAndSettings s = App.getAll();
       scrapcaunt.setText("Number of scrap gotten from this level: " + s.getScrapInLevel());
 
       slayerx = 500.0;
@@ -91,37 +119,15 @@ public class MainForm extends Application implements Initializable {
       for (int a = 0; a < projecriles.size(); ) {
         projecriles.remove(a);
       }
+
       hpold = 5;
       hp = 5;
-
-      level = s.currentlevel;
-      difficulty = s.difficulty;
 
       if (s.hardcore) {
         hpold = 1;
         hp = 1;
         difficulty = 3;
       }
-
-      if (difficulty == 1) {
-        spawnrate += 500;
-      } else if (difficulty == 3) {
-        spawnrate -= 200;
-      }
-
-      if (s.level > 3) {
-        spawnrate = spawnrate / 2;
-      }
-
-      bouncemode = s.BB;
-      piercingmode = s.PB;
-      granatemode = s.G;
-      fastmode = s.FB;
-      mashinegunmode = s.MG;
-      ultramashinegunmode = s.FMG;
-      shotgunmode = s.SG;
-      autoshootingmode = s.AS;
-      fastwalkingmode = s.FW;
     } else {
       newgame = true;
     }
@@ -318,13 +324,13 @@ public class MainForm extends Application implements Initializable {
   }
 
   /**
-   * Volá funkce co kreslí a posouvá objekty (hráč, jednotky, střely)
+   * Volá funkce co kreslí a posouvá objekty (hráč, jednotky, střely,... )
    * */
   @FXML
   public void draw() throws IOException, InterruptedException {
 
     if(enemysummoncaountdown == 0){
-      if(enemys.size() <= 11){
+      if(enemys.size() <= 8){
         summonEnemy();
       }
       if(granattimer > 0){
@@ -399,7 +405,7 @@ public class MainForm extends Application implements Initializable {
   }
 
   /**
-   * Překreslí vše na bálou plochu
+   * Překreslí vše na ploše
    * */
   private void drawDelate() {
     
@@ -432,8 +438,6 @@ public class MainForm extends Application implements Initializable {
 
   /**
    * Nakreslí postavu hráče
-   *
-   * dodělat - textura
    * */
   private void drawSlayer(double hunterx, double huntery) {
     
@@ -445,8 +449,6 @@ public class MainForm extends Application implements Initializable {
 
   /**
    * Nakreslí střelu hráče
-   *
-   * dodělat - textura
    * */
   private void drawBullet(double bulletpositionx, double bulletpositiony) {
 
@@ -572,7 +574,7 @@ public class MainForm extends Application implements Initializable {
       shootnow = false;
     }
 
-    if (caountdown == 0 && projecriles.size() <= 25) {
+    if (caountdown == 0 && projecriles.size() <= 20) {
       projecriles.add(new Bullet(slayercenterx, slayercentery, xmouse, ymouse, fastmode, bouncemode,piercingmode));
 
       caountdown += 100;
@@ -627,7 +629,6 @@ public class MainForm extends Application implements Initializable {
         summonPack(count, false, false, false);
         summonPack(count*3, false, false, false);
       }else if(count == 10){
-        summonPack(count, false, false, false);
         summonPack(count*3, false, false, false);
         summonPack(count*2, false, true, false);
         summonPack(count*5, false, false, false);
@@ -640,21 +641,20 @@ public class MainForm extends Application implements Initializable {
     }else if(level == 3){
       if(count < 3){
         summonPack(count, false, true, false);
-      }else if(count < 8){
+      }else if(count < 7){
         summonPack(count, false, true, false);
         if(count%2 == 1){
           summonPack(count*2, false, false, false);
         }
-      }else if(count < 13){
+      }else if(count < 11){
         summonPack(count*3, false, true, false);
         summonPack(count*2, false, true, false);
-      }else if(count < 15){
+      }else if(count < 13){
         summonPack(count*3, false, false, true);
         summonPack(count*2, false, true, false);
-      }else if(count == 16){
+      }else if(count == 14){
         summonPack(count*5, false, true, false);
         summonPack(count*7, false, false, true);
-        summonPack(count*2, false, true, false);
         summonPack(count*11, false, true, false);
       }
 
@@ -665,18 +665,17 @@ public class MainForm extends Application implements Initializable {
     }else if(level == 4){
       if(count < 3){
         summonPack(count*5, false, true, false);
-      }else if(count < 8){
+      }else if(count < 7){
         summonPack(count*5, false, true, false);
         summonPack(count*2, false, true, false);
-      }else if(count < 15){
+      }else if(count < 10){
         summonPack(count*2, false, true, false);
         summonPack(count*5, false, false, true);
-      }else if(count < 19){
+      }else if(count < 15){
         summonPack(count, false, true, false);
         summonPack(count*2, false, true, false);
-      }else if(count == 20){
+      }else if(count == 16){
         summonPack(count*3, true, false, false);
-        summonPack(count*7, false, false, true);
         summonPack(count*2, false, true, false);
         summonPack(count*11, false, true, true);
       }
@@ -687,25 +686,18 @@ public class MainForm extends Application implements Initializable {
       count++;
     }else if(level == 5){
       if(count < 3){
-        summonPack(count, false, false, true);
-        summonPack(count*5, false, true , true);
-        summonPack(count*2, false, false, true);
-      }else if(count < 8){
-        summonPack(count, true, false, false);
+        summonPack(count, false, true, true);
+      }else if(count < 7){
+        summonPack(count, false, true, true);
         summonPack(count*5, false, true, true);
-        summonPack(count*3, false, true, true);
-      }else if(count < 13){
-        summonPack(count*7, false, false, false);
+      }else if(count < 12){
         summonPack(count*3, true, true, false);
-        summonPack(count*2, false, true, true);
         summonPack(count*5, false, true, true);
       }else if(count < 15){
-        summonPack(count, false, true, false);
-        summonPack(count*11, false, false, true);
+        summonPack(count*11, false, true, true);
         summonPack(count*3, true, true, false);
         summonPack(count*7, false, true, true);
-      }else if(count == 16){
-        summonPack(count*3, false, false, false);
+      }else if(count == 18){
         summonPack(count*3, true, false, true);
         summonPack(count*5, false, false, true);
         summonPack(count*2, false, true, false);
@@ -719,24 +711,17 @@ public class MainForm extends Application implements Initializable {
     }else if(level == 6){
       if(count < 3){
         summonPack(count, true, false, true);
-        summonPack(count*5, false, true , true);
-        summonPack(count*2, true, true, false);
-      }else if(count < 8){
+        summonPack(count*2, true, false, false);
+      }else if(count < 9){
         summonPack(count, true, false, false);
         summonPack(count*2, true, true, false);
-        summonPack(count*3, false, true, true);
-      }else if(count < 13){
-        summonPack(count*11, false, true, false);
-        summonPack(count*3, true, true, false);
-        summonPack(count*2, false, true, true);
+      }else if(count < 12){
+        summonPack(count*3, true, false, true);
         summonPack(count*5, false, true, true);
-      }else if(count < 15){
-        summonPack(count, false, true, true);
-        summonPack(count*11, true, false, true);
-        summonPack(count*5, false, true, true);
+      }else if(count < 18){
         summonPack(count*3, true, true, false);
-        summonPack(count*7, false, true, true);
-      }else if(count == 16){
+        summonPack(count*5, false, true, true);
+      }else if(count == 19){
         summonPack(count*3, true, false, true);
         summonPack(count*5, false, true, true);
         summonPack(count*7, true, false, true);
@@ -744,7 +729,7 @@ public class MainForm extends Application implements Initializable {
         summonPack(count*11, true, true, false);
       }
 
-      if(count > 16 && enemys.size() == 0){
+      if(count > 27 && enemys.size() == 0){
         gameOver(true);
       }
       count++;
@@ -1013,6 +998,9 @@ public class MainForm extends Application implements Initializable {
     gc.strokeLine( 280, 30,270, 40);
   }
 
+  /**
+   * po stisknutí tlačítka zavolá pause the game
+   * */
   public void pauseGameAction(ActionEvent actionEvent) throws IOException {
     pauseTheGame((Stage)((Node) actionEvent.getSource()).getScene().getWindow());
   }
