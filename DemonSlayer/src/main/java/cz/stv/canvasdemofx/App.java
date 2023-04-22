@@ -1,5 +1,5 @@
 package cz.stv.canvasdemofx;
-//https://docs.oracle.com/javafx/2/get_started/fxml_tutorial.htm
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

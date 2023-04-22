@@ -103,6 +103,13 @@ public class MainForm extends Application implements Initializable {
       spawnrate = spawnrate / 2;
     }
 
+
+    if(fastwalkingmode){
+      step = 1.1;
+    }else{
+      step = 0.7;
+    }
+
     if(newgame) {
       scrapcaunt.setText("Number of scrap gotten from this level: " + s.getScrapInLevel());
 
@@ -213,43 +220,45 @@ public class MainForm extends Application implements Initializable {
   static void collisions(){
     int b = projecriles.toArray().length;
     for (int a = 0; a < b; a++) {
-      if(projecriles.get(a).positiony > 600){
-        if(projecriles.get(a).bounce){
-          projecriles.get(a).bounce = false;
-          projecriles.get(a).ymove *= -1;
-        }else{
-          projecriles.remove(a);
-          a--;
-          b--;
+      try {
+        if (projecriles.get(a).positiony > 600) {
+          if (projecriles.get(a).bounce) {
+            projecriles.get(a).bounce = false;
+            projecriles.get(a).ymove *= -1;
+          } else {
+            projecriles.remove(a);
+            a--;
+            b--;
+          }
+        } else if (projecriles.get(a).positionx > 1200) {
+          if (projecriles.get(a).bounce) {
+            projecriles.get(a).bounce = false;
+            projecriles.get(a).xmove *= -1;
+          } else {
+            projecriles.remove(a);
+            a--;
+            b--;
+          }
+        } else if (projecriles.get(a).positiony < 0) {
+          if (projecriles.get(a).bounce) {
+            projecriles.get(a).bounce = false;
+            projecriles.get(a).ymove *= -1;
+          } else {
+            projecriles.remove(a);
+            a--;
+            b--;
+          }
+        } else if (projecriles.get(a).positionx < 0) {
+          if (projecriles.get(a).bounce) {
+            projecriles.get(a).bounce = false;
+            projecriles.get(a).xmove *= -1;
+          } else {
+            projecriles.remove(a);
+            a--;
+            b--;
+          }
         }
-      }else if(projecriles.get(a).positionx > 1200){
-        if(projecriles.get(a).bounce){
-          projecriles.get(a).bounce = false;
-          projecriles.get(a).xmove *= -1;
-        }else{
-          projecriles.remove(a);
-          a--;
-          b--;
-        }
-      }else if(projecriles.get(a).positiony < 0){
-        if(projecriles.get(a).bounce){
-          projecriles.get(a).bounce = false;
-          projecriles.get(a).ymove *= -1;
-        }else{
-          projecriles.remove(a);
-          a--;
-          b--;
-        }
-      }else if(projecriles.get(a).positionx < 0){
-        if(projecriles.get(a).bounce){
-          projecriles.get(a).bounce = false;
-          projecriles.get(a).xmove *= -1;
-        }else{
-          projecriles.remove(a);
-          a--;
-          b--;
-        }
-      }
+      }catch(IndexOutOfBoundsException ignore){}
     }
 
     for(int a = 0; a < enemys.size();a++){
@@ -264,17 +273,17 @@ public class MainForm extends Application implements Initializable {
     int d = enemys.toArray().length;
     for(int c = 0; c < d;c++){
       //Ubírá životy hráče
-      if(!enemys.get(c).boss){
-        if(15 > enemys.get(c).enemycenterx - slayercenterx && enemys.get(c).enemycenterx - slayercenterx > -15 && 15 > enemys.get(c).enemycentery - slayercentery && enemys.get(c).enemycentery - slayercentery > -15) {
-          enemys.remove(c);
-          d--;
-          c--;
-          hp--;
 
-        }
-        //Zabíjí jednotky a ubírá jim životy
-        for(int f = 0; f < b; f++){
-          try{
+      try{
+        if(!enemys.get(c).boss){
+          if(15 > enemys.get(c).enemycenterx - slayercenterx && enemys.get(c).enemycenterx - slayercenterx > -15 && 15 > enemys.get(c).enemycentery - slayercentery && enemys.get(c).enemycentery - slayercentery > -15) {
+            enemys.remove(c);
+            d--;
+            c--;
+            hp--;
+          }
+          //Zabíjí jednotky a ubírá jim životy
+          for(int f = 0; f < b; f++){
             if(8 > enemys.get(c).enemycenterx - projecriles.get(f).positionx && enemys.get(c).enemycenterx - projecriles.get(f).positionx > -8 && 8 > enemys.get(c).enemycentery - projecriles.get(f).positiony && enemys.get(c).enemycentery - projecriles.get(f).positiony > -8) {
               enemys.get(c).hp--;
               if(enemys.get(c).hp < 1){
@@ -290,36 +299,34 @@ public class MainForm extends Application implements Initializable {
                 f--;
               }
             }
-          } catch(IndexOutOfBoundsException ignore){}
-        }
-      }else{
-        if(20 > enemys.get(c).enemycenterx - slayercenterx && enemys.get(c).enemycenterx - slayercenterx > -20 && 20 > enemys.get(c).enemycentery - slayercentery && enemys.get(c).enemycentery - slayercentery > -20) {
-          enemys.remove(c);
-          d--;
-          c--;
-          hp = 0;
-        }
-        //Zabíjí jednotky a ubírá jim životy
-        for(int f = 0; f < b; f++){
-          try {
-            if(13 > enemys.get(c).enemycenterx - projecriles.get(f).positionx && enemys.get(c).enemycenterx - projecriles.get(f).positionx > -13 && 13 > enemys.get(c).enemycentery - projecriles.get(f).positiony && enemys.get(c).enemycentery - projecriles.get(f).positiony > -13) {
-              enemys.get(c).hp--;
-              if(enemys.get(c).hp < 1){
-                enemys.remove(c);
-                d--;
-                c--;
+          }
+        }else{
+          if(20 > enemys.get(c).enemycenterx - slayercenterx && enemys.get(c).enemycenterx - slayercenterx > -20 && 20 > enemys.get(c).enemycentery - slayercentery && enemys.get(c).enemycentery - slayercentery > -20) {
+            enemys.remove(c);
+            d--;
+            c--;
+            hp = 0;
+          }
+          //Zabíjí jednotky a ubírá jim životy
+          for(int f = 0; f < b; f++){
+              if(13 > enemys.get(c).enemycenterx - projecriles.get(f).positionx && enemys.get(c).enemycenterx - projecriles.get(f).positionx > -13 && 13 > enemys.get(c).enemycentery - projecriles.get(f).positiony && enemys.get(c).enemycentery - projecriles.get(f).positiony > -13) {
+                enemys.get(c).hp--;
+                if(enemys.get(c).hp < 1){
+                  enemys.remove(c);
+                  d--;
+                  c--;
+                }
+                if(projecriles.get(f).piercing){
+                  projecriles.get(f).piercing = false;
+                }else{
+                  projecriles.remove(f);
+                  b--;
+                  f--;
+                }
               }
-              if(projecriles.get(f).piercing){
-                projecriles.get(f).piercing = false;
-              }else{
-                projecriles.remove(f);
-                b--;
-                f--;
-              }
-            }
-          }catch(IndexOutOfBoundsException ignore){}
+          }
         }
-      }
+      } catch(IndexOutOfBoundsException ignore){}
     }
   }
 
@@ -341,12 +348,6 @@ public class MainForm extends Application implements Initializable {
         }
       }
       enemysummoncaountdown = spawnrate;
-    }
-
-    if(fastwalkingmode){
-      step = 1.1;
-    }else{
-      step = 0.7;
     }
 
     if (wpressed && slayery > 25){
@@ -410,28 +411,22 @@ public class MainForm extends Application implements Initializable {
   private void drawDelate() {
     
     GraphicsContext gc = canvas.getGraphicsContext2D();
-    switch(level){
-      case(1):
-        gc.setFill(Color.GREEN);
-        break;
-      case(2):
-        gc.setFill(Color.LIGHTGREEN);
-        break;
-      case(3):
-        gc.setFill(Color.LIGHTSEAGREEN);
-        break;
-      case(4):
-        gc.setFill(Color.SADDLEBROWN);
-        break;
-      case(5):
-        gc.setFill(Color.BROWN);
-        break;
-      case(6):
-        gc.setFill(Color.FIREBRICK);
-        break;
-      case(7):
-        gc.setFill(Color.INDIANRED);
-        break;
+    if(level == 1){
+      gc.setFill(Color.GREEN);
+    } else if(level == 2){
+      gc.setFill(Color.LIGHTGREEN);
+    } else if(level == 3){
+      gc.setFill(Color.LIGHTSEAGREEN);
+    } else if(level == 4){
+      gc.setFill(Color.SADDLEBROWN);
+    } else if(level == 5){
+      gc.setFill(Color.BROWN);
+    } else if(level == 6){
+      gc.setFill(Color.FIREBRICK);
+    } else if(level == 7){
+      gc.setFill(Color.INDIANRED);
+    } else {
+      gc.setFill(Color.WHITE);
     }
     gc.fillRect(0, 0, 1280, 680);
   }
@@ -580,8 +575,7 @@ public class MainForm extends Application implements Initializable {
       caountdown += 100;
 
       if(mashinegunmode){
-        caountdown /= 4;
-        caountdown *= 3;
+        caountdown /= 1.5;
       }
 
       if(ultramashinegunmode){
@@ -658,7 +652,7 @@ public class MainForm extends Application implements Initializable {
         summonPack(count*11, false, true, false);
       }
 
-      if(count > 16 && enemys.size() == 0){
+      if(count > 14 && enemys.size() == 0){
         gameOver(true);
       }
       count++;
@@ -680,7 +674,7 @@ public class MainForm extends Application implements Initializable {
         summonPack(count*11, false, true, true);
       }
 
-      if(count > 20 && enemys.size() == 0){
+      if(count > 16 && enemys.size() == 0){
         gameOver(true);
       }
       count++;
@@ -704,7 +698,7 @@ public class MainForm extends Application implements Initializable {
         summonPack(count*11, true, true, false);
       }
 
-      if(count > 16 && enemys.size() == 0){
+      if(count > 18 && enemys.size() == 0){
         gameOver(true);
       }
       count++;
@@ -729,7 +723,7 @@ public class MainForm extends Application implements Initializable {
         summonPack(count*11, true, true, false);
       }
 
-      if(count > 27 && enemys.size() == 0){
+      if(count > 19 && enemys.size() == 0){
         gameOver(true);
       }
       count++;
