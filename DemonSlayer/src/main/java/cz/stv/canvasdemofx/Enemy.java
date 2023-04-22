@@ -67,10 +67,10 @@ public class Enemy {
         double rangeatac = 1;
 
         if(player && range){
-            if(x <= 10 && x >= -10 && y <= 10 && y >= -10){
-                rangeatac = 3;
-            }else if(x <= 20 && x >= -20 && y <= 20 && y >= -20){
+            if(x <= 50 && x >= -50 && y <= 50 && y >= -50){
                 rangeatac = 2;
+            }else if(x <= 100 && x >= -100 && y <= 100 && y >= -100){
+                rangeatac = 1.5;
             }
         }
 
