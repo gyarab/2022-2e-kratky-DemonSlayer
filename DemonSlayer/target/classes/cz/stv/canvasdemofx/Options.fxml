@@ -1,50 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<?import java.lang.Integer?>
-<AnchorPane id="AnchorPane" onKeyPressed="#keyOpPressed" onMouseMoved="#renameAllButtons" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.stv.canvasdemofx.App">
-   <VBox layoutX="304.0" layoutY="213.0" prefHeight="244.0" prefWidth="82.0">
+<AnchorPane id="AnchorPane" onKeyPressed="#keyOpPressed" onMouseMoved="#renameAllButtons" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: GRAY;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.stv.canvasdemofx.App">
+   <VBox layoutX="304.0" layoutY="213.0" prefHeight="157.0" prefWidth="82.0">
 
-      <Button fx:id="granatepressed" mnemonicParsing="false" onAction="#changeGranate" prefHeight="30.0" prefWidth="82.0" />
-      <Button fx:id="escape" mnemonicParsing="false" onAction="#changeEscape" prefHeight="30.0" prefWidth="82.0" />
-      <Button fx:id="upgrades" mnemonicParsing="false" onAction="#changeUpgrade" prefHeight="30.0" prefWidth="82.0" />
-      <ChoiceBox fx:id="leveldifficulty" prefHeight="30.0" prefWidth="82.0">
+      <Button fx:id="granatepressed" mnemonicParsing="false" onAction="#changeGranate" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;">
+         <font>
+            <Font name="Agency FB" size="13.0" />
+         </font></Button>
+      <Button fx:id="escape" mnemonicParsing="false" onAction="#changeEscape" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;">
+         <font>
+            <Font name="Agency FB" size="13.0" />
+         </font></Button>
+      <Button fx:id="upgrades" mnemonicParsing="false" onAction="#changeUpgrade" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;">
+         <font>
+            <Font name="Agency FB" size="13.0" />
+         </font></Button>
+      <ChoiceBox fx:id="leveldifficulty" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;">
+
          <items>
             <FXCollections fx:factory="observableArrayList">
+
                <String fx:value="Easy" />
                <String fx:value="Normal" />
                <String fx:value="Hard" />
             </FXCollections>
          </items>
       </ChoiceBox>
-      <CheckBox fx:id="hardcoremode" onAction="#setHardcore" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" text="If you want to have hardcore mark it." />
+      <CheckBox fx:id="hardcoremode" mnemonicParsing="false" onAction="#setHardcore" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="For masters">
+         <font>
+            <Font name="Agency FB" size="14.0" />
+         </font></CheckBox>
    </VBox>
    <VBox layoutX="304.0" layoutY="52.0" prefHeight="123.0" prefWidth="82.0">
-      <Button fx:id="uppressed" mnemonicParsing="false" onAction="#changeUp" prefHeight="30.0" prefWidth="82.0" />
-      <Button fx:id="downpressed" mnemonicParsing="false" onAction="#changeDown" prefHeight="30.0" prefWidth="82.0" />
-      <Button fx:id="leftpressed" mnemonicParsing="false" onAction="#changeLeft" prefHeight="30.0" prefWidth="82.0" />
-      <Button fx:id="rightpressed" mnemonicParsing="false" onAction="#changeRight" prefHeight="30.0" prefWidth="82.0" />
+      <Button fx:id="uppressed" mnemonicParsing="false" onAction="#changeUp" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;">
+         <font>
+            <Font name="Agency FB" size="13.0" />
+         </font></Button>
+      <Button fx:id="downpressed" mnemonicParsing="false" onAction="#changeDown" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;">
+         <font>
+            <Font name="Agency FB" size="13.0" />
+         </font></Button>
+      <Button fx:id="leftpressed" mnemonicParsing="false" onAction="#changeLeft" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;">
+         <font>
+            <Font name="Agency FB" size="13.0" />
+         </font></Button>
+      <Button fx:id="rightpressed" mnemonicParsing="false" onAction="#changeRight" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;">
+         <font>
+            <Font name="Agency FB" size="13.0" />
+         </font></Button>
    </VBox>
-   <Button layoutX="349.0" layoutY="18.0" mnemonicParsing="false" onAction="#exitOptions" prefHeight="26.0" prefWidth="36.0" text="ESC" />
-   <Label layoutX="14.0" layoutY="18.0" prefHeight="26.0" prefWidth="111.0" text="Movement" />
-   <Label layoutX="14.0" layoutY="179.0" prefHeight="26.0" prefWidth="122.0" text="Other" />
-   <VBox layoutX="14.0" layoutY="213.0" prefHeight="237.0" prefWidth="290.0">
-      <Label prefHeight="30.0" prefWidth="82.0" text="Granate" />
-      <Label prefHeight="30.0" prefWidth="82.0" text="Settings" />
-      <Label prefHeight="30.0" prefWidth="82.0" text="Upgrades" />
-      <Label prefHeight="30.0" prefWidth="82.0" text="Difficulty" />
-      <Label prefHeight="30.0" prefWidth="82.0" text="Hardcore" />
+   <Button layoutX="349.0" layoutY="18.0" mnemonicParsing="false" onAction="#exitOptions" prefHeight="26.0" prefWidth="36.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="ESC">
+      <font>
+         <Font name="Agency FB" size="13.0" />
+      </font></Button>
+   <Label layoutX="14.0" layoutY="18.0" prefHeight="26.0" prefWidth="111.0" text="Movement" underline="true">
+      <font>
+         <Font name="Agency FB" size="20.0" />
+      </font></Label>
+   <Label layoutX="14.0" layoutY="179.0" prefHeight="26.0" prefWidth="122.0" text="Other" underline="true">
+      <font>
+         <Font name="Agency FB" size="20.0" />
+      </font></Label>
+   <VBox layoutX="14.0" layoutY="213.0" prefHeight="184.0" prefWidth="290.0">
+      <Label prefHeight="30.0" prefWidth="82.0" text="Granate">
+         <font>
+            <Font name="Agency FB" size="16.0" />
+         </font></Label>
+      <Label prefHeight="30.0" prefWidth="82.0" text="Settings">
+         <font>
+            <Font name="Agency FB" size="16.0" />
+         </font></Label>
+      <Label prefHeight="30.0" prefWidth="82.0" text="Upgrades">
+         <font>
+            <Font name="Agency FB" size="16.0" />
+         </font></Label>
+      <Label prefHeight="30.0" prefWidth="82.0" text="Difficulty">
+         <font>
+            <Font name="Agency FB" size="16.0" />
+         </font></Label>
+      <Label prefHeight="30.0" prefWidth="82.0" text="Hardcore">
+         <font>
+            <Font name="Agency FB" size="16.0" />
+         </font></Label>
    </VBox>
    <VBox layoutX="14.0" layoutY="52.0" prefHeight="123.0" prefWidth="290.0">
-      <Label prefHeight="30.0" prefWidth="50.0" text="Up" />
-      <Label prefHeight="30.0" prefWidth="50.0" text="Down" />
-      <Label prefHeight="30.0" prefWidth="50.0" text="Left" />
-      <Label prefHeight="30.0" prefWidth="50.0" text="Right" />
+      <Label prefHeight="30.0" prefWidth="50.0" text="Up">
+         <font>
+            <Font name="Agency FB" size="16.0" />
+         </font></Label>
+      <Label prefHeight="30.0" prefWidth="50.0" text="Down">
+         <font>
+            <Font name="Agency FB" size="16.0" />
+         </font></Label>
+      <Label prefHeight="30.0" prefWidth="50.0" text="Left">
+         <font>
+            <Font name="Agency FB" size="16.0" />
+         </font></Label>
+      <Label prefHeight="30.0" prefWidth="50.0" text="Right">
+         <font>
+            <Font name="Agency FB" size="16.0" />
+         </font></Label>
    </VBox>
-   <Button layoutX="304.0" layoutY="18.0" mnemonicParsing="false" onAction="#resBinds" prefHeight="26.0" prefWidth="43.0" text="Res." />
-   <Label layoutX="11.0" layoutY="567.0" prefHeight="18.0" prefWidth="378.0" text="For resetting your binds press Res. button." />
+   <Button layoutX="304.0" layoutY="18.0" mnemonicParsing="false" onAction="#resBinds" prefHeight="26.0" prefWidth="43.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="Res.">
+      <font>
+         <Font name="Agency FB" size="13.0" />
+      </font></Button>
+   <Label layoutX="11.0" layoutY="567.0" prefHeight="18.0" prefWidth="378.0" text="For resetting your binds press Res. button.">
+      <font>
+         <Font name="Agency FB" size="17.0" />
+      </font></Label>
 </AnchorPane>

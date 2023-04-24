@@ -2,17 +2,61 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane onKeyPressed="#keyMMPressed" prefHeight="780.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.stv.canvasdemofx.App">
-   <Button fx:id="exitbutton" layoutX="1405.0" layoutY="14.0" mnemonicParsing="false" onAction="#exit" prefHeight="60.0" prefWidth="60.0" text="Exit" />
-   <Button fx:id="levelonebutton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#startLevelOne" prefHeight="50.0" prefWidth="100.0" text="1. level" />
-   <Button fx:id="leveltwobutton" layoutX="14.0" layoutY="64.0" mnemonicParsing="false" onAction="#startLevelTwo" prefHeight="50.0" prefWidth="100.0" text="2. level" />
-   <Button fx:id="levelthreebutton" layoutX="14.0" layoutY="114.0" mnemonicParsing="false" onAction="#startLevelThree" prefHeight="50.0" prefWidth="100.0" text="3. level" />
-   <Button fx:id="levelfourbutton" layoutX="14.0" layoutY="164.0" mnemonicParsing="false" onAction="#startLevelFour" prefHeight="50.0" prefWidth="100.0" text="4. level" />
-   <Button fx:id="levelfivebutton" layoutX="14.0" layoutY="214.0" mnemonicParsing="false" onAction="#startLevelFive" prefHeight="50.0" prefWidth="100.0" text="5. level" />
-   <Button fx:id="levelsixbutton" layoutX="14.0" layoutY="264.0" mnemonicParsing="false" onAction="#startLevelSix" prefHeight="50.0" prefWidth="100.0" text="6. level" />
-   <Button fx:id="levelsevenbutton" layoutX="14.0" layoutY="314.0" mnemonicParsing="false" onAction="#startLevelSeven" prefHeight="50.0" prefWidth="100.0" text="7. level" />
-   <Button fx:id="settingsbut" layoutX="14.0" layoutY="585.0" mnemonicParsing="false" onAction="#openSettings" prefHeight="80.0" prefWidth="200.0" text="Options" />
-   <Button fx:id="upgradesbut" layoutX="14.0" layoutY="666.0" mnemonicParsing="false" onAction="#openUpgrades" prefHeight="100.0" prefWidth="400.0" text="Upgrades" />
-   <Button fx:id="resetcharacer" layoutX="1365.0" layoutY="675.0" mnemonicParsing="false" onAction="#resetCharacer" prefHeight="90.0" prefWidth="100.0" text="Reset Character" />
+<AnchorPane onKeyPressed="#keyMMPressed" prefHeight="780.0" prefWidth="1480.0" style="-fx-background-color: GRAY;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.stv.canvasdemofx.App">
+   <Button fx:id="exitbutton" layoutX="1405.0" layoutY="14.0" mnemonicParsing="false" onAction="#exit" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="Exit">
+      <font>
+         <Font name="Agency FB" size="20.0" />
+      </font></Button>
+   <Button fx:id="levelonebutton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#startLevelOne" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="1. level">
+      <font>
+         <Font name="Algerian" size="16.0" />
+      </font></Button>
+   <Button fx:id="leveltwobutton" layoutX="14.0" layoutY="64.0" mnemonicParsing="false" onAction="#startLevelTwo" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="2. level">
+      <font>
+         <Font name="Algerian" size="16.0" />
+      </font></Button>
+   <Button fx:id="levelthreebutton" layoutX="14.0" layoutY="114.0" mnemonicParsing="false" onAction="#startLevelThree" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="3. level">
+      <font>
+         <Font name="Algerian" size="16.0" />
+      </font></Button>
+   <Button fx:id="levelfourbutton" layoutX="14.0" layoutY="164.0" mnemonicParsing="false" onAction="#startLevelFour" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="4. level">
+      <font>
+         <Font name="Algerian" size="16.0" />
+      </font></Button>
+   <Button fx:id="levelfivebutton" layoutX="14.0" layoutY="214.0" mnemonicParsing="false" onAction="#startLevelFive" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="5. level">
+      <font>
+         <Font name="Algerian" size="16.0" />
+      </font></Button>
+   <Button fx:id="levelsixbutton" layoutX="14.0" layoutY="264.0" mnemonicParsing="false" onAction="#startLevelSix" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="6. level">
+      <font>
+         <Font name="Algerian" size="16.0" />
+      </font></Button>
+   <Button fx:id="levelsevenbutton" layoutX="14.0" layoutY="314.0" mnemonicParsing="false" onAction="#startLevelSeven" prefHeight="50.0" prefWidth="100.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="7. level">
+      <font>
+         <Font name="Algerian" size="16.0" />
+      </font></Button>
+   <Button fx:id="settingsbut" layoutX="14.0" layoutY="585.0" mnemonicParsing="false" onAction="#openSettings" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="Options">
+      <font>
+         <Font name="Agen          cy FB" size="33.0" />
+      </font></Button>
+   <Button fx:id="upgradesbut" layoutX="14.0" layoutY="666.0" mnemonicParsing="false" onAction="#openUpgrades" prefHeight="100.0" prefWidth="400.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="Upgrades">
+      <font>
+         <Font name="Agency FB" size="51.0" />
+      </font></Button>
+   <Button fx:id="resetcharacer" layoutX="1285.0" layoutY="675.0" mnemonicParsing="false" onAction="#resetCharacer" prefHeight="90.0" prefWidth="180.0" style="-fx-background-color: DARKGRAY; -fx-border-color: BLACK;" text="Reset Character">
+      <font>
+         <Font name="Agency FB" size="24.0" />
+      </font></Button>
+   <Label layoutX="640.0" layoutY="248.0" prefHeight="100.0" prefWidth="200.0" text="Demon">
+      <font>
+         <Font name="Blackadder ITC" size="80.0" />
+      </font>
+   </Label>
+   <Label layoutX="640.0" layoutY="339.0" prefHeight="132.0" prefWidth="200.0" text="Slayer" textAlignment="CENTER">
+      <font>
+         <Font name="Blackadder ITC" size="80.0" />
+      </font>
+   </Label>
 </AnchorPane>

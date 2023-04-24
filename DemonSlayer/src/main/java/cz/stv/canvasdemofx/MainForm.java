@@ -111,7 +111,7 @@ public class MainForm extends Application implements Initializable {
     }
 
     if(newgame) {
-      scrapcaunt.setText("Number of scrap gotten from this level: " + s.getScrapInLevel());
+      scrapcaunt.setText("     Number of scrap gotten from this level: " + s.getScrapInLevel());
 
       slayerx = 500.0;
       slayery = 500.0;
@@ -951,8 +951,16 @@ public class MainForm extends Application implements Initializable {
   @FXML
   public void drawHpBar(){
     GraphicsContext gc = hpbar.getGraphicsContext2D();
-    gc.setFill(Color.GRAY);
+    gc.setFill(Color.DARKGRAY);
     gc.fillRect(0, 0, 675, 138);
+    gc.setStroke(Color.BLACK);
+    gc.setLineWidth(3);
+    gc.strokeLine( 0, 0,0, 138);
+    gc.strokeLine( 0, 0,675, 0);
+    gc.strokeLine( 675, 0,675, 138);
+    gc.strokeLine( 675, 138, 0, 138);
+
+
     int a = hp;
     for(int b = 1; b <= 5;b++){
       if(a > 0){

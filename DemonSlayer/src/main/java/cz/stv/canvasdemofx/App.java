@@ -14,6 +14,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -552,71 +553,71 @@ public class App extends Application implements Serializable {
         StatsAndSettings s = getAll();
 
         if(s.scrap >= 6){
-            setStyleGreen(SG);
-            setStyleGreen(FMG);
+            setStyleLG(SG);
+            setStyleLG(FMG);
         } else {
-            setStyleRed(SG);
-            setStyleRed(FMG);
+            setStyleG(SG);
+            setStyleG(FMG);
         }
 
         if(s.scrap >= 4){
-            setStyleGreen(AS);
-            setStyleGreen(FW);
-            setStyleGreen(MG);
+            setStyleLG(AS);
+            setStyleLG(FW);
+            setStyleLG(MG);
         } else {
-            setStyleRed(AS);
-            setStyleRed(FW);
-            setStyleRed(MG);
+            setStyleG(AS);
+            setStyleG(FW);
+            setStyleG(MG);
         }
 
         if(s.scrap >= 3){
-            setStyleGreen(PB);
-            setStyleGreen(BB);
-            setStyleGreen(G);
+            setStyleLG(PB);
+            setStyleLG(BB);
+            setStyleLG(G);
         } else {
-            setStyleRed(PB);
-            setStyleRed(BB);
-            setStyleRed(G);
+            setStyleG(PB);
+            setStyleG(BB);
+            setStyleG(G);
         }
 
         if(s.scrap >= 2){
-            setStyleGreen(FB);
+            setStyleLG(FB);
         } else {
-            setStyleRed(FB);
+            setStyleG(FB);
         }
 
-        if(s.BB){setStyleOrange(BB);}
-        if(s.G){setStyleOrange(G);}
-        if(s.AS){setStyleOrange(AS);}
-        if(s.FW){setStyleOrange(FW);}
-        if(s.FMG){setStyleOrange(FMG);}
-        if(s.MG){setStyleOrange(MG);}
-        if(s.PB){setStyleOrange(PB);}
-        if(s.FB){setStyleOrange(FB);}
-        if(s.SG){setStyleOrange(SG);}
+        if(s.BB){setStyleDG(BB);}
+        if(s.G){setStyleDG(G);}
+        if(s.AS){setStyleDG(AS);}
+        if(s.FW){setStyleDG(FW);}
+        if(s.FMG){setStyleDG(FMG);}
+        if(s.MG){setStyleDG(MG);}
+        if(s.PB){setStyleDG(PB);}
+        if(s.FB){setStyleDG(FB);}
+        if(s.SG){setStyleDG(SG);}
 
         scrapCount.setText("Scrap: " + s.scrap);
     }
 
     /**
-     * Nastavý pozadí tlačítka na oranžovou
+     * Nastavý pozadí tlačítka na tmavě šedou (z nějakého důvodu je šedá tmavší než tmavě šeda)
      * */
-    public void setStyleOrange(Button b){
-        b.setStyle("-fx-background-color: Orange");
+    public void setStyleDG(Button b){
+        b.setStyle("-fx-background-color: darkgray; -fx-border-color: BLACK;");
     }
 
     /**
-     * Nastavý pozadí tlačítka na oranžovou
+     * Nastavý pozadí tlačítka na světle šedou
      * */
-    public void setStyleGreen(Button b){
-        b.setStyle("-fx-background-color: Green");
+    public void setStyleLG(Button b){
+        b.setStyle("-fx-background-color: lightgray; -fx-border-color: BLACK;");
     }
 
     /**
-     * Nastavý pozadí tlačítka na oranžovou
+     * Nastavý pozadí tlačítka na šedou
      * */
-    public void setStyleRed(Button b){
-        b.setStyle("-fx-background-color: Red");
+    public void setStyleG(Button b){
+        b.setStyle("-fx-background-color: gray; -fx-border-color: BLACK;");
     }
 
     /**
