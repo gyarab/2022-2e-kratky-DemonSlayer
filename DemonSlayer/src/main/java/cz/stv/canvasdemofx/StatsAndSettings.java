@@ -1,7 +1,6 @@
 package cz.stv.canvasdemofx;
 
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 
 import java.io.Serializable;
 

@@ -681,41 +681,39 @@ public class MainForm extends Application implements Initializable {
     }else if(level == 5){
       if(count < 3){
         summonPack(count, false, true, true);
-      }else if(count < 7){
+      }else if(count < 8){
         summonPack(count, false, true, true);
-        summonPack(count*5, false, true, true);
+        summonPack(count*5, false, true, false);
       }else if(count < 12){
         summonPack(count*3, true, true, false);
         summonPack(count*5, false, true, true);
       }else if(count < 15){
         summonPack(count*11, false, true, true);
         summonPack(count*3, true, true, false);
-        summonPack(count*7, false, true, true);
-      }else if(count == 18){
+      }else if(count == 16){
         summonPack(count*3, true, false, true);
         summonPack(count*5, false, false, true);
         summonPack(count*2, false, true, false);
         summonPack(count*11, true, true, false);
       }
 
-      if(count > 18 && enemys.size() == 0){
+      if(count > 16 && enemys.size() == 0){
         gameOver(true);
       }
       count++;
     }else if(level == 6){
       if(count < 3){
-        summonPack(count, true, false, true);
         summonPack(count*2, true, false, false);
-      }else if(count < 9){
+      }else if(count < 8){
         summonPack(count, true, false, false);
         summonPack(count*2, true, true, false);
-      }else if(count < 12){
+      }else if(count < 11){
         summonPack(count*3, true, false, true);
         summonPack(count*5, false, true, true);
-      }else if(count < 18){
+      }else if(count < 15){
         summonPack(count*3, true, true, false);
         summonPack(count*5, false, true, true);
-      }else if(count == 19){
+      }else if(count == 16){
         summonPack(count*3, true, false, true);
         summonPack(count*5, false, true, true);
         summonPack(count*7, true, false, true);
@@ -723,7 +721,7 @@ public class MainForm extends Application implements Initializable {
         summonPack(count*11, true, true, false);
       }
 
-      if(count > 19 && enemys.size() == 0){
+      if(count > 16 && enemys.size() == 0){
         gameOver(true);
       }
       count++;
